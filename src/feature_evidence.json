@@ -1,0 +1,25 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-make-the-custom-domain-https-pccomputerandcommunication-com-the-primary-canonical-live-link-for-the-website-by-updating-any-user-visible-references-ui-text-links-documentation-that-currently-point-to-the-ic-provided-url-so-they-instead-point-to-the-custom-domain-while-keeping-the-ic-provided-url-working-as-an-alternate-access-url",
+      "featureTitle": "Make the custom domain `https://pccomputerandcommunication.com` the primary/canonical live link for the website by updating any user-visible references (UI text, links, documentation) that currently point to the IC-provided URL so they instead point to the custom domain, while keeping the IC-provided URL working as an alternate access URL.",
+      "files": [
+        "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md",
+        "frontend/index.html"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

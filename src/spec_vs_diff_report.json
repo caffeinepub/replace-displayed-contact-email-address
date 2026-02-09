@@ -1,0 +1,34 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-09T18:14:01.669Z",
+  "summary": "The diff clearly adds the required canonical link tag in `frontend/index.html` and updates the custom-domain setup documentation to present `https://pccomputerandcommunication.com` as the primary URL while noting the IC-provided URL remains available. However, the diff summary does not provide evidence that all user-visible frontend references (UI text/links) that previously pointed to the IC-provided URL were updated to the custom domain, nor can it confirm that navigation/hash scrolling behavior remains unbroken.",
+  "missing_requirements": [
+    {
+      "id": "REQ-10",
+      "requirement": "Update any user-visible references (UI text, links, documentation) that currently point to the IC-provided URL so they instead point to `https://pccomputerandcommunication.com`, while keeping the IC-provided URL working as an alternate access URL.",
+      "reason": "The diff includes documentation updates and the canonical tag, but does not show any concrete frontend UI text/link changes (e.g., in `Header`, `Hero`, `Footer`, etc.) that replace IC-provided URLs with the custom domain. From the provided diffs, only `frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md` and `frontend/index.html` content is evidenced.",
+      "evidence": [
+        "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md",
+        "frontend/index.html",
+        "frontend-file-summaries.txt"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "No existing navigation, deep links (hash navigation), or section scrolling behavior is broken by these changes.",
+      "reason": "The diff summary does not include enough detail (tests, explicit confirmation, or relevant code changes) to verify that hash navigation/scrolling behavior remains intact after changes.",
+      "evidence": [
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
+  "hallucinated_features": [],
+  "confidence": 0.62,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md",
+    "frontend/index.html",
+    "project_state.json"
+  ]
+}

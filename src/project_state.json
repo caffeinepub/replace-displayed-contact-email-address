@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 13,
+  "summary": "Business website with an online store (product browsing and purchasing), editable contact details, and support for a custom branded domain.",
+  "architectural_notes": [
+    "Product catalog should support product images and detailed descriptions for each item.",
+    "Support mapping a custom domain (pccomputerandcommunication.com) to the deployed site and configuring DNS/SSL as needed.",
+    "Custom domain configuration should support setting pccomputerandcommunication.com as the primary/live link (canonical domain) after connection."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-replace-all-user-visible-occurrences-of-the-contact-email-address-info-pccomputer-com-with-panerudaya11-gmail-com-including-updating-any-corresponding-mailto-links-so-that-clicking-the-email-opens-a-new-message-to-panerudaya11-gmail-com-e-g-in-the-contact-section-and-footer",
+      "title": "Replace all user-visible occurrences of the contact email address `info@pccomputer.com` with `panerudaya11@gmail.com`, including updating any corresponding `mailto:` links, so that clicking the email opens a new message to `panerudaya11@gmail.com` (e.g., in the Contact section and Footer).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-four-new-products-to-the-store-catalog-so-they-appear-on-the-products-section-hp-laptop-15-dell-inspiron-desktop-canon-laser-printer-and-tp-link-wifi-router-each-product-must-include-an-english-description-at-least-2-3-sentences-an-availability-flag-set-to-available-and-a-price-or-explicitly-show-contact-for-price-if-price-is-not-provided",
+      "title": "Add four new products to the store catalog so they appear on the Products section: HP Laptop 15, Dell Inspiron Desktop, Canon Laser Printer, and TP-Link WiFi Router. Each product must include an English description (at least 2–3 sentences), an availability flag set to available, and a price (or explicitly show “Contact for price” if price is not provided).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-data-model-and-ui-rendering-to-support-product-images-provided-as-static-urls-for-generated-images-without-breaking-existing-product-image-handling-the-products-grid-must-render-an-image-from-a-product-level-url-when-present-otherwise-fall-back-to-the-current-externalblob-direct-url-behavior",
+      "title": "Update the data model and UI rendering to support product images provided as static URLs (for generated images), without breaking existing product image handling. The Products grid must render an image from a product-level URL when present, otherwise fall back to the current ExternalBlob direct URL behavior.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ship-and-reference-generated-product-images-as-static-frontend-assets-in-frontend-public-assets-generated-and-ensure-the-four-new-products-are-configured-to-use-these-images",
+      "title": "Ship and reference generated product images as static frontend assets in frontend/public/assets/generated, and ensure the four new products are configured to use these images.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-uploaded-image-2025-02-14-10-43-08-105-2-jpg-to-the-website-by-shipping-it-as-a-static-frontend-asset-and-displaying-it-prominently-in-the-about-section-in-place-of-the-current-about-image-the-image-currently-sourced-from-assets-generated-store-interior-dim-800x600-jpg",
+      "title": "Add the user-uploaded image (2025-02-14-10-43-08-105-2.jpg) to the website by shipping it as a static frontend asset and displaying it prominently in the About section in place of the current About image (the image currently sourced from /assets/generated/store-interior.dim_800x600.jpg).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-edit-the-about-section-storefront-image-to-replace-the-phone-number-text-7906467206-with-9315906829-within-the-photo-keeping-the-rest-of-the-image-visually-unchanged",
+      "title": "Edit the About section storefront image to replace the phone number text \"7906467206\" with \"9315906829\" within the photo, keeping the rest of the image visually unchanged.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-about-section-to-reference-the-newly-edited-storefront-image-asset-so-the-site-displays-the-updated-phone-number-image",
+      "title": "Update the About section to reference the newly edited storefront image asset (so the site displays the updated phone number image).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-configure-the-application-to-support-the-custom-branded-domain-pccomputerandcommunication-com-so-that-the-live-website-is-reachable-at-https-pccomputerandcommunication-com-in-addition-to-the-current-icp-provided-url",
+      "title": "Configure the application to support the custom branded domain `pccomputerandcommunication.com` so that the live website is reachable at `https://pccomputerandcommunication.com` in addition to the current ICP-provided URL.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-domain-connection-instructions-for-pccomputerandcommunication-com-dns-records-and-any-required-internet-computer-boundary-node-domain-verification-steps-in-clear-english-so-the-user-can-complete-setup-with-their-domain-registrar",
+      "title": "Provide domain-connection instructions for `pccomputerandcommunication.com` (DNS records and any required Internet Computer boundary node/domain-verification steps) in clear English so the user can complete setup with their domain registrar.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-custom-domain-https-pccomputerandcommunication-com-the-primary-canonical-live-link-for-the-website-by-updating-any-user-visible-references-ui-text-links-documentation-that-currently-point-to-the-ic-provided-url-so-they-instead-point-to-the-custom-domain-while-keeping-the-ic-provided-url-working-as-an-alternate-access-url",
+      "title": "Make the custom domain `https://pccomputerandcommunication.com` the primary/canonical live link for the website by updating any user-visible references (UI text, links, documentation) that currently point to the IC-provided URL so they instead point to the custom domain, while keeping the IC-provided URL working as an alternate access URL.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Replace contact email address from info@pccomputer.com to panerudaya11@gmail.com",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add new store products (HP Laptop 15, Dell Inspiron Desktop, Canon Laser Printer, TP-Link WiFi Router) with images and descriptions/details",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add the user-provided picture to the website page (placement/page to be clarified)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Edit the uploaded/storefront photo to replace the phone number 7906467206 with 9315906829",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Set up custom branded domain pccomputerandcommunication.com to point to the live website",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Make pccomputerandcommunication.com the primary live link/domain for the deployed website",
+      "reqIds": [],
+      "status": "in_progress"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Replace displayed contact email address",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

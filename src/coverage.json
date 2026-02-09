@@ -1,0 +1,40 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-09T18:14:01.671Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 1,
+    "implemented": 1,
+    "items": [
+      {
+        "id": "REQ-10",
+        "summary": "Make the custom domain `https://pccomputerandcommunication.com` the primary/canonical live link for the website by updating any user-visible references (UI text, links, documentation) that currently point to the IC-provided URL so they instead point to the custom domain, while keeping the IC-provided URL working as an alternate access URL.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/index.html",
+          "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md"
+        ],
+        "matchedFiles": [
+          "frontend/index.html",
+          "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md",
+    "frontend/index.html",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

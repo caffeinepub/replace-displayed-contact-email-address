@@ -1,2 +1,3 @@
-# replace-displayed-contact-email-address
-Exported from Caffeine project: Replace displayed contact email address
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

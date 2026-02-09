@@ -1,0 +1,29 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Set pccomputerandcommunication.com as canonical primary URL",
+  "requirements": [
+    {
+      "id": "REQ-10",
+      "summary": "Update user-visible references to use https://pccomputerandcommunication.com as the primary live link and add a canonical tag while keeping the IC URL usable as an alternate.",
+      "acceptanceCriteria": [
+        "Any user-facing place in the frontend that references the live website URL uses `https://pccomputerandcommunication.com` as the default link.",
+        "The custom-domain setup documentation reflects `https://pccomputerandcommunication.com` as the primary URL, while noting the IC-provided URL remains available.",
+        "Add a canonical URL hint for search engines by including a `<link rel=\"canonical\" href=\"https://pccomputerandcommunication.com\" />` tag in `frontend/index.html`.",
+        "No existing navigation, deep links (hash navigation), or section scrolling behavior is broken by these changes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add a canonical URL hint for search engines by inserting `<link rel=\"canonical\" href=\"https://pccomputerandcommunication.com\" />` into the document `<head>` without altering the existing React mount or script tag."
+        },
+        {
+          "path": "frontend/DOMAIN_CONNECTION_INSTRUCTIONS.md",
+          "operation": "modify",
+          "description": "Update the documentation to present `https://pccomputerandcommunication.com` as the primary/canonical URL; replace any current IC-provided URL references (e.g., the icp0.io placeholder) with wording that clearly notes the IC-provided URL remains available as an alternate access URL."
+        }
+      ]
+    }
+  ]
+}
