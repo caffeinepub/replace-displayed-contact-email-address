@@ -61,7 +61,9 @@ const Header = () => {
     { label: 'Products & Services', id: 'products' },
     { label: 'About', id: 'about' },
     { label: 'Contact', id: 'contact' },
-    { label: 'Documents', id: 'documents' }
+    { label: 'Documents', id: 'documents' },
+    { label: 'Terms & Conditions', id: 'terms' },
+    { label: 'Cancellation & Refund Policy', id: 'cancellation-refund' }
   ];
 
   return (

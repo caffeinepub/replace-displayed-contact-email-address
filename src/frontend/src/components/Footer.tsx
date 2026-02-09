@@ -14,6 +14,13 @@ const Footer = () => {
         top: offsetPosition,
         behavior: 'smooth'
       });
+      
+      // Update URL hash for deep linking
+      if (window.history.pushState) {
+        window.history.pushState(null, '', `#${id}`);
+      } else {
+        window.location.hash = id;
+      }
     }
   };
 
@@ -71,6 +78,22 @@ const Footer = () => {
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
                 >
                   Contact
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection('terms')}
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Terms & Conditions
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection('cancellation-refund')}
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Cancellation & Refund Policy
                 </button>
               </li>
             </ul>
@@ -137,7 +160,7 @@ const Footer = () => {
             © {currentYear}. Built with{' '}
             <Heart className="h-4 w-4 text-red-500 fill-red-500" /> using{' '}
             <a
-              href="https://caffeine.ai"
+              href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

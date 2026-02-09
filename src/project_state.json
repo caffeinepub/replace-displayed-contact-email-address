@@ -1,13 +1,15 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
+  "projectStateVersion": 19,
   "summary": "Business website with an online store (product browsing and purchasing), editable contact details, and support for a custom branded domain.",
   "architectural_notes": [
     "Product catalog should support product images and detailed descriptions for each item.",
     "Support mapping a custom domain (pccomputerandcommunication.com) to the deployed site and configuring DNS/SSL as needed.",
     "Custom domain configuration should support setting pccomputerandcommunication.com as the primary/live link (canonical domain) after connection."
   ],
-  "known_issues": [],
+  "known_issues": [
+    "Automated build failed to implement the requested “Terms & Conditions” section (AI couldn’t implement; request may need more detail/specificity)."
+  ],
   "isFixRequest": false,
   "existing_features": [
     {
@@ -89,6 +91,38 @@
         "REQ-10"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-a-new-terms-conditions-section-to-the-single-page-website-that-is-accessible-via-deep-link-e-g-terms-and-contains-english-user-facing-text-with-a-basic-professional-terms-conditions-template-headings-short-paragraphs-bullets",
+      "title": "Add a new “Terms & Conditions” section to the single-page website that is accessible via deep link (e.g., #terms) and contains English user-facing text with a basic, professional Terms & Conditions template (headings + short paragraphs/bullets).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-expose-terms-conditions-in-site-navigation-by-adding-a-link-button-to-it-in-the-header-navigation-and-in-the-footer-quick-links-using-the-existing-smooth-scroll-behavior",
+      "title": "Expose “Terms & Conditions” in site navigation by adding a link/button to it in the Header navigation and in the Footer “Quick Links”, using the existing smooth-scroll behavior.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-cancellation-refund-policy-section-to-the-single-page-site-that-is-accessible-via-deep-link-e-g-cancellation-refund-and-contains-clear-professional-english-user-facing-policy-text-formatted-similarly-to-the-existing-terms-conditions-section-headings-short-paragraphs-and-bullets",
+      "title": "Add a new “Cancellation & Refund Policy” section to the single-page site that is accessible via deep link (e.g., #cancellation-refund) and contains clear, professional English user-facing policy text formatted similarly to the existing Terms & Conditions section (headings, short paragraphs, and bullets).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-expose-cancellation-refund-policy-in-site-navigation-by-adding-a-link-button-in-the-header-navigation-and-in-the-footer-quick-links-using-the-existing-smooth-scroll-and-hash-update-behavior-so-users-can-deep-link-directly-to-the-new-section",
+      "title": "Expose “Cancellation & Refund Policy” in site navigation by adding a link/button in the Header navigation and in the Footer “Quick Links”, using the existing smooth-scroll and hash update behavior so users can deep-link directly to the new section.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -127,6 +161,18 @@
       "summary": "Make pccomputerandcommunication.com the primary live link/domain for the deployed website",
       "reqIds": [],
       "status": "in_progress"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add/mention a Terms & Conditions section/page on the website",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Add a Cancellation & Refund Policy section/page to the website (user-facing text, accessible via navigation/deep link)",
+      "reqIds": [],
+      "status": "pending"
     }
   ],
   "gameProjectType": "none",

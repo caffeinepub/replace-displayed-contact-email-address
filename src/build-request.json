@@ -1,36 +1,15 @@
 {
   "kind": "build_request",
-  "title": "Make pccomputerandcommunication.com the primary live link",
+  "title": "Terms & Conditions section",
   "priority": "normal",
-  "requirements": [
-    {
-      "id": "REQ-10",
-      "text": "Make the custom domain `https://pccomputerandcommunication.com` the primary/canonical live link for the website by updating any user-visible references (UI text, links, documentation) that currently point to the IC-provided URL so they instead point to the custom domain, while keeping the IC-provided URL working as an alternate access URL.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "yes please"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Any user-facing place in the frontend that references the live website URL uses `https://pccomputerandcommunication.com` as the default link.",
-        "The custom-domain setup documentation reflects `https://pccomputerandcommunication.com` as the primary URL, while noting the IC-provided URL remains available.",
-        "Add a canonical URL hint for search engines by including a `<link rel=\"canonical\" href=\"https://pccomputerandcommunication.com\" />` tag in `frontend/index.html`.",
-        "No existing navigation, deep links (hash navigation), or section scrolling behavior is broken by these changes."
-      ]
-    }
-  ],
+  "requirements": [],
   "constraints": [
-    "Do not modify any files under `frontend/src/components/ui` (compose existing components instead).",
-    "Do not edit immutable hook/bootstrap files listed in SYSTEM_CONTEXT (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/hooks/useInternetIdentity.ts`).",
-    "Backend remains single-actor; no backend changes are required for this request."
+    "Do not create a separate Terms & Conditions page/route; keep it as a section within the existing single-page layout using the deep-link id \"terms\".",
+    "Do not modify any files under frontend/src/components/ui or other immutable frontend paths listed in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Do not perform or automate the user’s DNS registrar changes (this remains a manual step outside the app).",
-    "Do not attempt to implement HTTP redirects at the boundary node level from the IC-provided domain to the custom domain."
+    "Adding new legal policy sections beyond Terms & Conditions (e.g., Privacy Policy) unless explicitly requested.",
+    "Changing backend data models or adding backend storage for Terms & Conditions content."
   ],
   "imageRequirements": {
     "required": [],
@@ -39,7 +18,9 @@
   "userProfileUpdate": {
     "goalsToAdd": [],
     "goalsToRemove": [],
-    "preferencesToAdd": [],
+    "preferencesToAdd": [
+      "Use English for any user-facing text."
+    ],
     "preferencesToRemove": [],
     "miscToAdd": [],
     "miscToRemove": [],

@@ -7,6 +7,8 @@ import Products from './components/Products';
 import About from './components/About';
 import Contact from './components/Contact';
 import Documents from './components/Documents';
+import Terms from './components/Terms';
+import CancellationRefundPolicy from './components/CancellationRefundPolicy';
 import Footer from './components/Footer';
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
           <About />
           <Contact />
           <Documents />
+          <Terms />
+          <CancellationRefundPolicy />
         </main>
         <Footer />
         <Toaster />
