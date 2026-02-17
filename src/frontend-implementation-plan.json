@@ -1,6 +1,30 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Terms & Conditions section",
-  "requirements": []
+  "title": "Add Facebook profile link to site footer",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add a Facebook social link/icon in the footer pointing to the provided Facebook profile URL, opening in a new tab with proper accessibility.",
+      "acceptanceCriteria": [
+        "The footer displays a Facebook link/icon under a \"Follow Us\" (or equivalent) label.",
+        "Clicking the Facebook link opens https://www.facebook.com/profile.php?id=61575271824165.",
+        "The Facebook link opens in a new tab and includes rel=\"noopener noreferrer\".",
+        "The Facebook link is present anywhere the footer renders (including the main site and payment status pages).",
+        "The Facebook link has accessible labeling (e.g., aria-label=\"Facebook\")."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Add or update the footer's \"Follow Us\" social section to include a Facebook icon/link pointing to https://www.facebook.com/profile.php?id=61575271824165, ensuring target=\"_blank\", rel=\"noopener noreferrer\", and an accessible label (e.g., aria-label=\"Facebook\"). Ensure no other social links are added/changed."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Verify the shared Footer component renders on the main site and on payment status pages so the Facebook link is consistently available wherever the footer appears."
+        }
+      ]
+    }
+  ]
 }

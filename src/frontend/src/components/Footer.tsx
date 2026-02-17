@@ -1,10 +1,15 @@
-import { SiFacebook, SiX, SiLinkedin, SiInstagram } from 'react-icons/si';
+import { SiFacebook } from 'react-icons/si';
 import { Heart } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const scrollToSection = (id: string) => {
+    if (window.location.pathname !== '/') {
+      window.location.href = `/#${id}`;
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
@@ -15,7 +20,6 @@ const Footer = () => {
         behavior: 'smooth'
       });
       
-      // Update URL hash for deep linking
       if (window.history.pushState) {
         window.history.pushState(null, '', `#${id}`);
       } else {
@@ -31,17 +35,17 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="/assets/generated/pc-logo-transparent.dim_200x200.png"
-                alt="P C Computer and Communication"
+                src="/assets/generated/dqm-logo.dim_256x256.png"
+                alt="P C COMPUTER AND COMMUNICATION"
                 className="h-10 w-10 object-contain"
               />
               <div>
-                <h3 className="font-bold text-foreground">P C Computer</h3>
-                <p className="text-sm text-muted-foreground">& Communication</p>
+                <h3 className="font-bold text-foreground">P C COMPUTER AND COMMUNICATION</h3>
+                <p className="text-sm text-muted-foreground">Technology Solutions</p>
               </div>
             </div>
             <p className="text-muted-foreground text-sm">
-              Your trusted partner for electronics and communication solutions.
+              Your trusted partner for quality computer hardware and expert services.
             </p>
           </div>
 
@@ -58,10 +62,18 @@ const Footer = () => {
               </li>
               <li>
                 <button
+                  onClick={() => scrollToSection('services')}
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Services
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => scrollToSection('products')}
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
                 >
-                  Products & Services
+                  Products
                 </button>
               </li>
               <li>
@@ -80,22 +92,6 @@ const Footer = () => {
                   Contact
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('terms')}
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                >
-                  Terms & Conditions
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('cancellation-refund')}
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                >
-                  Cancellation & Refund Policy
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -104,10 +100,10 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>37, Dahriya, Mukhani</li>
               <li>Haldwani, Nainital</li>
-              <li>Uttarakhand, 263139</li>
+              <li>Uttarakhand - 263139</li>
               <li>
-                <a href="tel:9315906829" className="hover:text-primary transition-colors">
-                  9315906829
+                <a href="tel:+919315906829" className="hover:text-primary transition-colors">
+                  +91 93159 06829
                 </a>
               </li>
               <li>
@@ -130,34 +126,13 @@ const Footer = () => {
               >
                 <SiFacebook className="h-5 w-5" />
               </a>
-              <a
-                href="#"
-                className="p-2 bg-muted hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors"
-                aria-label="X (Twitter)"
-              >
-                <SiX className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="p-2 bg-muted hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors"
-                aria-label="LinkedIn"
-              >
-                <SiLinkedin className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="p-2 bg-muted hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors"
-                aria-label="Instagram"
-              >
-                <SiInstagram className="h-5 w-5" />
-              </a>
             </div>
           </div>
         </div>
 
         <div className="pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground flex items-center justify-center gap-1 flex-wrap">
-            © {currentYear}. Built with{' '}
+            © {currentYear} P C COMPUTER AND COMMUNICATION. Built with{' '}
             <Heart className="h-4 w-4 text-red-500 fill-red-500" /> using{' '}
             <a
               href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}

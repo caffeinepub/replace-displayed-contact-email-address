@@ -1,43 +1,24 @@
-// No backend changes are required for connecting custom domains.
-// Changes can be made entirely in the deployment and infrastructure layer.
-//
-// Please follow these domain-connection instructions.
-
-//
-// **Domain Connection Instructions for `pccomputerandcommunication.com`:**
-//
-// 1. **Add DNS CNAME Record**:
-//    - Create a CNAME record pointing `www.pccomputerandcommunication.com`
-//      to your `icp0.io` CNAME.
-//    - This step allows both www (optional/legacy) and non-www access.
-//
-// 2. **Domain Verification with the Internet Computer**:
-//    - No backend code changes needed. Verification is handled by the domain
-//      registrar and the Internet Computer boundary nodes automatically.
-//
-// 3. **Access `https://pccomputerandcommunication.com`**:
-//    - Once DNS propagation is complete, your site will be accessible via
-//      the custom domain.
-//    - Existing ICP-provided endpoint will remain functional.
-//
-// 4. **(Optional) Redirect non-www to www or vice versa**:
-//    - You can configure redirection at your domain registrar if desired.
 import Map "mo:core/Map";
-import List "mo:core/List";
 import Array "mo:core/Array";
 import Iter "mo:core/Iter";
 import Text "mo:core/Text";
 import Nat "mo:core/Nat";
+import List "mo:core/List";
 import Runtime "mo:core/Runtime";
 import Int "mo:core/Int";
 import Time "mo:core/Time";
-
+import Principal "mo:core/Principal";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
-
-// Data migration after upgrade
+import Stripe "stripe/stripe";
+import OutCall "http-outcalls/outcall";
+import MixinAuthorization "authorization/MixinAuthorization";
+import AccessControl "authorization/access-control";
 
 actor {
+  // Initialize the access control system
+  let accessControlState = AccessControl.initState();
+  include MixinAuthorization(accessControlState);
   include MixinStorage();
 
   let phoneNumber = "9315906829";
@@ -78,15 +59,105 @@ actor {
     uploadDate : Time.Time;
   };
 
+  type PaymentOrder = {
+    id : Nat;
+    createdAt : Time.Time;
+    stripePaymentId : ?Text;
+    paymentStatus : OrderStatus;
+    items : [Stripe.ShoppingItem];
+    amountCents : ?Nat;
+    paymentCurrency : ?Text;
+    email : Text;
+    phone : Text;
+    billingAddress : Text;
+    fullName : Text;
+    customerPrincipal : ?Principal;
+  };
+
+  type OrderStatus = {
+    #pending;
+    #completed;
+    #failed : { error : Text };
+  };
+
+  public type UserProfile = {
+    name : Text;
+    email : ?Text;
+    phone : ?Text;
+  };
+
   let products = Map.empty<Nat, Product>();
   let contactSubmissions = Map.empty<Text, ContactSubmission>();
   let documents = Map.empty<Text, Document>();
+  let orders = Map.empty<Nat, PaymentOrder>();
+  let userProfiles = Map.empty<Principal, UserProfile>();
 
   var productCounter = 0;
   var submissionCounter = 0;
   var documentCounter = 0;
+  var orderIdCounter = 0;
 
-  // Product Related Functions
+  // Stripe configuration
+  var stripeConfig : ?Stripe.StripeConfiguration = null;
+
+  // Stripe Functions
+
+  public query func isStripeConfigured() : async Bool {
+    stripeConfig != null;
+  };
+
+  public shared ({ caller }) func setStripeConfiguration(config : Stripe.StripeConfiguration) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can perform this action");
+    };
+    stripeConfig := ?config;
+  };
+
+  func getStripeConfiguration() : Stripe.StripeConfiguration {
+    switch (stripeConfig) {
+      case (null) { Runtime.trap("Stripe needs to be first configured") };
+      case (?config) { config };
+    };
+  };
+
+  public shared ({ caller }) func createCheckoutSession(items : [Stripe.ShoppingItem], successUrl : Text, cancelUrl : Text) : async Text {
+    let config = getStripeConfiguration();
+    await Stripe.createCheckoutSession(config, caller, items, successUrl, cancelUrl, transform);
+  };
+
+  public func getStripeSessionStatus(sessionId : Text) : async Stripe.StripeSessionStatus {
+    let config = getStripeConfiguration();
+    await Stripe.getSessionStatus(config, sessionId, transform);
+  };
+
+  public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
+    OutCall.transform(input);
+  };
+
+  // User Profile Functions
+
+  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view profiles");
+    };
+    userProfiles.get(caller);
+  };
+
+  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
+    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Can only view your own profile");
+    };
+    userProfiles.get(user);
+  };
+
+  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can save profiles");
+    };
+    userProfiles.add(caller, profile);
+  };
+
+  // Product Related Functions (Public - no auth required)
 
   public query ({ caller }) func getProduct(id : Nat) : async Product {
     switch (products.get(id)) {
@@ -96,30 +167,24 @@ actor {
   };
 
   public query ({ caller }) func getProductsByCategory(category : ProductCategory) : async [Product] {
-    let iter = products.values();
-    let filteredIter = iter.filter(
-      func(product) {
-        product.category == category and product.isAvailable;
-      }
-    );
-    filteredIter.toArray();
+    products.values().toArray().filter(func(product) { product.category == category and product.isAvailable });
   };
 
   public query ({ caller }) func getAllAvailableProducts() : async [Product] {
-    products.values().toArray().filter(
-      func(product) {
-        product.isAvailable;
-      }
-    );
+    products.values().toArray().filter(func(product) { product.isAvailable });
   };
 
   public query ({ caller }) func getAllProducts() : async [Product] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view all products");
+    };
     products.values().toArray();
   };
 
   // Contact Submissions
 
   public shared ({ caller }) func submitContactForm(name : Text, email : Text, message : Text) : async () {
+    // Public endpoint - no auth required
     let id = submissionCounter.toText();
     submissionCounter += 1;
 
@@ -134,12 +199,19 @@ actor {
   };
 
   public query ({ caller }) func getAllContactSubmissions() : async [ContactSubmission] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view contact submissions");
+    };
     contactSubmissions.values().toArray();
   };
 
-  // Documents
+  // Documents (Admin-only)
 
   public shared ({ caller }) func addDocument(title : Text, blob : Storage.ExternalBlob) : async Text {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can add documents");
+    };
+
     let id = documentCounter.toText();
     documentCounter += 1;
 
@@ -155,6 +227,10 @@ actor {
   };
 
   public query ({ caller }) func getDocument(id : Text) : async Document {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view documents");
+    };
+
     switch (documents.get(id)) {
       case (null) { Runtime.trap("Document not found") };
       case (?document) { document };
@@ -162,7 +238,83 @@ actor {
   };
 
   public query ({ caller }) func getAllDocuments() : async [Document] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view documents");
+    };
     documents.values().toArray();
   };
-};
 
+  // Order Management
+
+  func getNewOrderId() : Nat {
+    let id = orderIdCounter;
+    orderIdCounter += 1;
+    id;
+  };
+
+  public query ({ caller }) func getOrders() : async [PaymentOrder] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view all orders");
+    };
+    orders.values().toArray();
+  };
+
+  public shared ({ caller }) func createOrder(email : Text, phone : Text, billingAddress : Text, fullName : Text, items : [Stripe.ShoppingItem], amountCents : ?Nat, paymentCurrency : ?Text) : async Nat {
+    // Public endpoint - anyone can create an order (initiate checkout)
+    let id = getNewOrderId();
+    let customerPrincipal = if (caller.isAnonymous()) { null } else { ?caller };
+
+    let order : PaymentOrder = {
+      id;
+      createdAt = Time.now();
+      items;
+      amountCents;
+      paymentCurrency;
+      email;
+      phone;
+      billingAddress;
+      fullName;
+      stripePaymentId = null;
+      paymentStatus = #pending;
+      customerPrincipal;
+    };
+    orders.add(id, order);
+    id;
+  };
+
+  public shared ({ caller }) func updateOrderStatus(orderId : Nat, status : OrderStatus, stripeSessionId : ?Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can update order status");
+    };
+
+    switch (orders.get(orderId)) {
+      case (null) { Runtime.trap("Order not found") };
+      case (?order) {
+        let updated : PaymentOrder = {
+          order with paymentStatus = status;
+          stripePaymentId = stripeSessionId;
+        };
+        orders.add(orderId, updated);
+      };
+    };
+  };
+
+  public query ({ caller }) func getOrder(orderId : Nat) : async PaymentOrder {
+    switch (orders.get(orderId)) {
+      case (null) { Runtime.trap("Order not found") };
+      case (?order) {
+        // Allow access if: admin OR order owner (if authenticated)
+        let isOwner = switch (order.customerPrincipal) {
+          case (null) { false };
+          case (?principal) { principal == caller };
+        };
+
+        if (not (AccessControl.isAdmin(accessControlState, caller) or isOwner)) {
+          Runtime.trap("Unauthorized: Can only view your own orders");
+        };
+
+        order;
+      };
+    };
+  };
+};

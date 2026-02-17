@@ -6,15 +6,22 @@ import {
   Radio,
   Wrench,
   Loader2,
-  ImageOff
+  ImageOff,
+  ShoppingCart
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useGetAllAvailableProducts } from '@/hooks/useQueries';
+import { useCreateCheckoutSession } from '@/hooks/useCreateCheckoutSession';
 import { ProductCategory, Product } from '../backend';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 const Products = () => {
   const { data: products, isLoading } = useGetAllAvailableProducts();
+  const createCheckoutSession = useCreateCheckoutSession();
+  const [purchasingProductId, setPurchasingProductId] = useState<bigint | null>(null);
 
   const categoryIcons = {
     [ProductCategory.Computers]: Monitor,
@@ -38,15 +45,44 @@ const Products = () => {
   };
 
   const getImageSource = (product: Product) => {
-    // Prefer static imageUrl if available
     if (product.imageUrl) {
       return product.imageUrl;
     }
-    // Fallback to ExternalBlob if available
     if (product.image) {
       return product.image.getDirectURL();
     }
     return null;
+  };
+
+  const handleBuyNow = async (product: Product) => {
+    if (!product.price) {
+      toast.error('Price not available. Please contact us for pricing.');
+      return;
+    }
+
+    setPurchasingProductId(product.id);
+
+    try {
+      const shoppingItems = [{
+        productName: product.name,
+        productDescription: product.description || 'No description',
+        priceInCents: product.price,
+        quantity: BigInt(1),
+        currency: 'INR'
+      }];
+
+      const session = await createCheckoutSession.mutateAsync(shoppingItems);
+      
+      if (!session?.url) {
+        throw new Error('Stripe session missing url');
+      }
+
+      window.location.href = session.url;
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      toast.error(error.message || 'Failed to initiate checkout. Please try again.');
+      setPurchasingProductId(null);
+    }
   };
 
   const groupedProducts = products?.reduce((acc, product) => {
@@ -59,14 +95,14 @@ const Products = () => {
   }, {} as Record<ProductCategory, typeof products>);
 
   return (
-    <section id="products" className="py-20 bg-muted/30">
+    <section id="products" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Our Products & Services
+            Our Products
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive technology solutions for all your computer and communication needs
+            Browse our selection of quality computer hardware and accessories
           </p>
         </div>
 
@@ -94,11 +130,12 @@ const Products = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {categoryProducts.map((product) => {
                       const imageSource = getImageSource(product);
+                      const isPurchasing = purchasingProductId === product.id;
                       
                       return (
                         <Card
                           key={Number(product.id)}
-                          className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                          className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden flex flex-col"
                         >
                           <div className="aspect-[4/3] overflow-hidden bg-muted">
                             {imageSource ? (
@@ -113,7 +150,7 @@ const Products = () => {
                               </div>
                             )}
                           </div>
-                          <CardHeader>
+                          <CardHeader className="flex-grow">
                             <div className="flex items-start justify-between gap-2 mb-2">
                               <CardTitle className="text-lg leading-tight">
                                 {product.name}
@@ -124,7 +161,7 @@ const Products = () => {
                                 </Badge>
                               ) : (
                                 <Badge variant="outline" className="shrink-0">
-                                  Contact for price
+                                  Contact
                                 </Badge>
                               )}
                             </div>
@@ -132,6 +169,25 @@ const Products = () => {
                               {product.description || 'No description available'}
                             </CardDescription>
                           </CardHeader>
+                          <CardContent className="pt-0">
+                            <Button
+                              className="w-full"
+                              onClick={() => handleBuyNow(product)}
+                              disabled={!product.price || isPurchasing}
+                            >
+                              {isPurchasing ? (
+                                <>
+                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                  Processing...
+                                </>
+                              ) : (
+                                <>
+                                  <ShoppingCart className="mr-2 h-4 w-4" />
+                                  Buy Now
+                                </>
+                              )}
+                            </Button>
+                          </CardContent>
                         </Card>
                       );
                     })}

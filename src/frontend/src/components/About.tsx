@@ -1,102 +1,75 @@
-import { Award, Users, Clock, Target } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const About = () => {
-  const values = [
-    {
-      icon: Award,
-      title: 'Quality Products',
-      description: 'We source only the best electronics and computer equipment from trusted manufacturers'
-    },
-    {
-      icon: Users,
-      title: 'Expert Team',
-      description: 'Our experienced technicians provide professional service and support'
-    },
-    {
-      icon: Clock,
-      title: 'Reliable Service',
-      description: 'Fast turnaround times and dependable solutions for all your technology needs'
-    },
-    {
-      icon: Target,
-      title: 'Customer Focus',
-      description: 'Your satisfaction is our priority, with personalized attention to every client'
-    }
-  ];
-
   return (
-    <section id="about" className="py-20 bg-background">
+    <section id="about" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            About Us
+            About P C COMPUTER AND COMMUNICATION
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Your trusted partner in technology solutions
+            Your trusted technology partner since day one
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <img
-              src="/assets/generated/storefront-photo-phone-9315906829.dim_1200x800.jpg"
-              alt="P C Computer and Communication storefront with services including sales, repairs, gaming, and cartridges"
+              src="/assets/generated/dqm-section-1.dim_1200x800.jpg"
+              alt="P C COMPUTER AND COMMUNICATION store and services"
               className="rounded-lg shadow-xl w-full"
             />
           </div>
 
           <div>
             <h3 className="text-3xl font-bold text-foreground mb-6">
-              Leading Electronics & Communication Provider
+              Quality Technology Solutions
             </h3>
             <div className="space-y-4 text-lg text-muted-foreground">
               <p>
-                P C Computer and Communication is a professional electronics and
-                communication company dedicated to providing high-quality products
-                and services to businesses and individuals.
+                P C COMPUTER AND COMMUNICATION is your one-stop destination for all computer hardware, 
+                accessories, and technology services. We pride ourselves on offering 
+                premium quality products at competitive prices.
               </p>
               <p>
-                With years of experience in the industry, we have built a
-                reputation for excellence in computer sales, communication
-                equipment, and technical support services. Our team of skilled
-                technicians is committed to delivering reliable solutions that meet
-                your specific needs.
+                Our experienced team provides expert guidance to help you choose the 
+                right technology solutions for your needs, whether for home, office, 
+                or gaming.
               </p>
               <p>
-                We pride ourselves on staying current with the latest technology
-                trends and offering competitive prices without compromising on
-                quality. Whether you need a new computer system, network setup, or
-                repair services, we're here to help.
+                With a commitment to customer satisfaction and after-sales support, 
+                we ensure that your technology investment delivers lasting value.
               </p>
             </div>
           </div>
         </div>
 
-        <div>
-          <h3 className="text-3xl font-bold text-foreground mb-8 text-center">
-            Our Core Values
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => {
-              const Icon = value.icon;
-              return (
-                <Card
-                  key={index}
-                  className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                >
-                  <CardContent className="pt-6">
-                    <div className="mb-4 p-4 bg-primary/10 rounded-full w-fit mx-auto">
-                      <Icon className="h-8 w-8 text-primary" />
-                    </div>
-                    <h4 className="text-xl font-semibold text-foreground mb-2">
-                      {value.title}
-                    </h4>
-                    <p className="text-muted-foreground">{value.description}</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="order-2 lg:order-1">
+            <h3 className="text-3xl font-bold text-foreground mb-6">
+              Expert Service & Support
+            </h3>
+            <div className="space-y-4 text-lg text-muted-foreground">
+              <p>
+                Our certified technicians provide professional repair and maintenance 
+                services for all types of computer hardware. From simple upgrades to 
+                complex repairs, we handle it all.
+              </p>
+              <p>
+                We use only genuine parts and follow industry best practices to ensure 
+                your devices perform at their best. Fast turnaround times and transparent 
+                pricing are our guarantee.
+              </p>
+            </div>
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <img
+              src="/assets/generated/dqm-section-2.dim_1200x800.jpg"
+              alt="P C COMPUTER AND COMMUNICATION repair and support services"
+              className="rounded-lg shadow-xl w-full"
+            />
           </div>
         </div>
       </div>

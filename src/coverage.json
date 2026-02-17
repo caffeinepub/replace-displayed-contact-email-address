@@ -1,15 +1,26 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T20:10:40.369Z",
+  "generatedAt": "2026-02-17T15:59:45.978Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 0,
+    "total": 1,
     "implemented": 0,
-    "items": []
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Add a new Facebook social link in the website footer that points to https://www.facebook.com/profile.php?id=61575271824165.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": []
+      }
+    ]
   },
   "changedFiles": [
     "build-request.json",

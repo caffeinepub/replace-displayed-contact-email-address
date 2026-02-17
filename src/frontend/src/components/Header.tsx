@@ -18,8 +18,7 @@ const Header = () => {
   useEffect(() => {
     // Handle deep-link hash navigation on initial load
     const hash = window.location.hash.slice(1);
-    if (hash) {
-      // Wait for DOM to be ready
+    if (hash && window.location.pathname === '/') {
       setTimeout(() => {
         const element = document.getElementById(hash);
         if (element) {
@@ -36,6 +35,12 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id: string) => {
+    // If on payment page, navigate to home first
+    if (window.location.pathname !== '/') {
+      window.location.href = `/#${id}`;
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
@@ -47,7 +52,6 @@ const Header = () => {
       });
       setIsOpen(false);
       
-      // Update URL hash without reload for deep linking
       if (window.history.pushState) {
         window.history.pushState(null, '', `#${id}`);
       } else {
@@ -58,12 +62,10 @@ const Header = () => {
 
   const navItems = [
     { label: 'Home', id: 'home' },
-    { label: 'Products & Services', id: 'products' },
+    { label: 'Services', id: 'services' },
+    { label: 'Products', id: 'products' },
     { label: 'About', id: 'about' },
-    { label: 'Contact', id: 'contact' },
-    { label: 'Documents', id: 'documents' },
-    { label: 'Terms & Conditions', id: 'terms' },
-    { label: 'Cancellation & Refund Policy', id: 'cancellation-refund' }
+    { label: 'Contact', id: 'contact' }
   ];
 
   return (
@@ -81,15 +83,15 @@ const Header = () => {
             className="flex items-center gap-3 group"
           >
             <img
-              src="/assets/generated/pc-logo-transparent.dim_200x200.png"
-              alt="P C Computer and Communication"
+              src="/assets/generated/dqm-logo.dim_256x256.png"
+              alt="P C COMPUTER AND COMMUNICATION"
               className="h-12 w-12 object-contain transition-transform group-hover:scale-110"
             />
             <div className="text-left">
               <h1 className="text-xl font-bold text-foreground leading-tight">
-                P C Computer
+                P C COMPUTER AND COMMUNICATION
               </h1>
-              <p className="text-sm text-muted-foreground">& Communication</p>
+              <p className="text-sm text-muted-foreground">Technology Solutions</p>
             </div>
           </button>
 

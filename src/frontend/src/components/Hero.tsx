@@ -1,4 +1,4 @@
-import { ArrowRight, Cpu, Wifi, Wrench } from 'lucide-react';
+import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
@@ -20,7 +20,7 @@ const Hero = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: 'url(/assets/generated/hero-banner.dim_1200x400.jpg)',
+          backgroundImage: 'url(/assets/generated/dqm-hero.dim_1600x600.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -33,19 +33,17 @@ const Hero = () => {
         <div className="max-w-3xl">
           <div className="inline-block mb-4 px-4 py-2 bg-primary/10 rounded-full">
             <span className="text-primary font-semibold text-sm">
-              Your Trusted Technology Partner
+              Your Complete Technology Partner
             </span>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-            P C Computer &{' '}
-            <span className="text-primary">Communication</span>
+            P C COMPUTER AND COMMUNICATION
           </h1>
 
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
-            Professional electronics and communication solutions for your business
-            and personal needs. Quality products, expert service, and reliable
-            support.
+            Premium computer hardware, accessories, and expert services. 
+            Quality products with reliable support for all your technology needs.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-12">
@@ -54,7 +52,8 @@ const Hero = () => {
               onClick={() => scrollToSection('products')}
               className="group"
             >
-              Explore Our Services
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              Shop Now
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button
@@ -62,40 +61,8 @@ const Hero = () => {
               variant="outline"
               onClick={() => scrollToSection('contact')}
             >
-              Get in Touch
+              Contact Us
             </Button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Cpu className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Computer Sales</h3>
-                <p className="text-sm text-muted-foreground">Latest hardware</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Wifi className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Communication</h3>
-                <p className="text-sm text-muted-foreground">Network solutions</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Wrench className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Repair Services</h3>
-                <p className="text-sm text-muted-foreground">Expert technicians</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

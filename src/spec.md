@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Add a Terms & Conditions section to the existing single-page layout.
+**Goal:** Add a Facebook social link in the site footer that points to the provided Facebook profile.
 
 **Planned changes:**
-- Add a new “Terms & Conditions” section within the existing single-page layout with deep-link id `terms` (no separate page/route).
-- Ensure all user-facing Terms & Conditions text is in English.
+- Update the footer “Follow Us” (or equivalent) social links to include a Facebook link pointing to https://www.facebook.com/profile.php?id=61575271824165.
+- Ensure the Facebook link opens in a new tab with `rel="noopener noreferrer"` and includes accessible labeling (e.g., `aria-label="Facebook"`).
+- Ensure the Facebook link appears anywhere the footer is rendered (including the main site and payment status pages).
 
-**User-visible outcome:** Users can scroll to (or deep-link to) the Terms & Conditions section on the existing single-page site.
+**User-visible outcome:** Visitors see a Facebook icon/link in the footer and can open the specified Facebook profile in a new tab.

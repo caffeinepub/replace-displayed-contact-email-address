@@ -1,26 +1,51 @@
-# Custom Domain Setup Instructions for pccomputerandcommunication.com
+# Custom Domain Connection Instructions
 
-This guide will help you connect your custom domain **pccomputerandcommunication.com** to your live Internet Computer application.
+## Primary Domain: dqmcomputer.com
 
----
+Follow these steps to connect your custom domain to this Internet Computer application:
 
-## Overview
+### Step 1: Verify Domain Ownership
+1. Ensure the domain `dqmcomputer.com` is listed in the file `frontend/public/.well-known/ic-domains`
+2. This file has already been created and deployed with your application
 
-The Internet Computer (IC) supports custom domains through its boundary nodes. Once configured, your site will be accessible via:
-- **Primary URL**: `https://pccomputerandcommunication.com` (canonical)
-- **Alternate URL**: Your IC-provided domain (e.g., `https://[canister-id].icp0.io`) will continue to work as an alternate access point
+### Step 2: Configure DNS Records
+Add the following DNS records in your domain registrar's control panel:
 
----
+**For root domain (dqmcomputer.com):**
+- Type: `CNAME`
+- Name: `@` or leave blank (depending on your registrar)
+- Value: `icp1.io`
+- TTL: `3600` (or your registrar's default)
 
-## Prerequisites
+**For www subdomain (www.dqmcomputer.com):**
+- Type: `CNAME`
+- Name: `www`
+- Value: `icp1.io`
+- TTL: `3600`
 
-1. **Domain Ownership**: You must own or have administrative access to `pccomputerandcommunication.com` at your domain registrar (e.g., GoDaddy, Namecheap, Cloudflare, Google Domains, etc.)
-2. **DNS Management Access**: Ability to add/edit DNS records for your domain
-3. **Deployed Application**: Your application is already deployed and live on the Internet Computer
+**Note:** Some registrars don't allow CNAME records for root domains. In that case, use:
+- Type: `A`
+- Name: `@`
+- Value: `147.75.83.255`
 
----
+### Step 3: Wait for DNS Propagation
+- DNS changes can take 1-48 hours to propagate globally
+- You can check propagation status at: https://dnschecker.org
 
-## Step 1: Add Domain Verification File
+### Step 4: Verify Connection
+Once DNS has propagated, your application will be accessible at:
+- https://dqmcomputer.com
+- https://www.dqmcomputer.com
 
-✅ **Already Complete** — This project includes the verification file at:
+### Alternative Access
+Your application is also accessible via the Internet Computer URL:
+- Check your deployment output for the IC-provided URL (format: `https://[canister-id].icp0.io`)
 
+### Troubleshooting
+If your domain doesn't connect after 48 hours:
+1. Verify DNS records are correctly configured
+2. Ensure `dqmcomputer.com` is listed in `.well-known/ic-domains`
+3. Clear your browser cache
+4. Try accessing from an incognito/private window
+
+For more information, visit: https://internetcomputer.org/docs/current/developer-docs/web-apps/custom-domains/

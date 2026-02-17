@@ -23,6 +23,23 @@ export interface Document {
   'uploadDate' : Time,
 }
 export type ExternalBlob = Uint8Array;
+export type OrderStatus = { 'pending' : null } |
+  { 'completed' : null } |
+  { 'failed' : { 'error' : string } };
+export interface PaymentOrder {
+  'id' : bigint,
+  'paymentStatus' : OrderStatus,
+  'billingAddress' : string,
+  'customerPrincipal' : [] | [Principal],
+  'createdAt' : Time,
+  'fullName' : string,
+  'amountCents' : [] | [bigint],
+  'paymentCurrency' : [] | [string],
+  'email' : string,
+  'stripePaymentId' : [] | [string],
+  'phone' : string,
+  'items' : Array<ShoppingItem>,
+}
 export interface Product {
   'id' : bigint,
   'name' : string,
@@ -39,7 +56,39 @@ export type ProductCategory = { 'Accessories' : null } |
   { 'Communication' : null } |
   { 'Networking' : null } |
   { 'Services' : null };
+export interface ShoppingItem {
+  'productName' : string,
+  'currency' : string,
+  'quantity' : bigint,
+  'priceInCents' : bigint,
+  'productDescription' : string,
+}
+export interface StripeConfiguration {
+  'allowedCountries' : Array<string>,
+  'secretKey' : string,
+}
+export type StripeSessionStatus = {
+    'completed' : { 'userPrincipal' : [] | [string], 'response' : string }
+  } |
+  { 'failed' : { 'error' : string } };
 export type Time = bigint;
+export interface TransformationInput {
+  'context' : Uint8Array,
+  'response' : http_request_result,
+}
+export interface TransformationOutput {
+  'status' : bigint,
+  'body' : Uint8Array,
+  'headers' : Array<http_header>,
+}
+export interface UserProfile {
+  'name' : string,
+  'email' : [] | [string],
+  'phone' : [] | [string],
+}
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _CaffeineStorageCreateCertificateResult {
   'method' : string,
   'blob_hash' : string,
@@ -50,6 +99,12 @@ export interface _CaffeineStorageRefillInformation {
 export interface _CaffeineStorageRefillResult {
   'success' : [] | [boolean],
   'topped_up_amount' : [] | [bigint],
+}
+export interface http_header { 'value' : string, 'name' : string }
+export interface http_request_result {
+  'status' : bigint,
+  'body' : Uint8Array,
+  'headers' : Array<http_header>,
 }
 export interface _SERVICE {
   '_caffeineStorageBlobIsLive' : ActorMethod<[Uint8Array], boolean>,
@@ -67,15 +122,48 @@ export interface _SERVICE {
     _CaffeineStorageRefillResult
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addDocument' : ActorMethod<[string, ExternalBlob], string>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'createCheckoutSession' : ActorMethod<
+    [Array<ShoppingItem>, string, string],
+    string
+  >,
+  'createOrder' : ActorMethod<
+    [
+      string,
+      string,
+      string,
+      string,
+      Array<ShoppingItem>,
+      [] | [bigint],
+      [] | [string],
+    ],
+    bigint
+  >,
   'getAllAvailableProducts' : ActorMethod<[], Array<Product>>,
   'getAllContactSubmissions' : ActorMethod<[], Array<ContactSubmission>>,
   'getAllDocuments' : ActorMethod<[], Array<Document>>,
   'getAllProducts' : ActorMethod<[], Array<Product>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getDocument' : ActorMethod<[string], Document>,
+  'getOrder' : ActorMethod<[bigint], PaymentOrder>,
+  'getOrders' : ActorMethod<[], Array<PaymentOrder>>,
   'getProduct' : ActorMethod<[bigint], Product>,
   'getProductsByCategory' : ActorMethod<[ProductCategory], Array<Product>>,
+  'getStripeSessionStatus' : ActorMethod<[string], StripeSessionStatus>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'isStripeConfigured' : ActorMethod<[], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'setStripeConfiguration' : ActorMethod<[StripeConfiguration], undefined>,
   'submitContactForm' : ActorMethod<[string, string, string], undefined>,
+  'transform' : ActorMethod<[TransformationInput], TransformationOutput>,
+  'updateOrderStatus' : ActorMethod<
+    [bigint, OrderStatus, [] | [string]],
+    undefined
+  >,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

@@ -1,30 +1,45 @@
 {
   "kind": "build_request",
-  "title": "Terms & Conditions section",
+  "title": "Add Facebook profile link to site footer",
+  "projectName": "PC Computer Site",
   "priority": "normal",
-  "requirements": [],
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Add a new Facebook social link in the website footer that points to https://www.facebook.com/profile.php?id=61575271824165.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Replace an existing social link with this one",
+          "https://www.facebook.com/profile.php?id=61575271824165",
+          "add a new Facebook link to the footer\\"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The footer displays a Facebook link/icon under a \"Follow Us\" (or equivalent) label.",
+        "Clicking the Facebook link opens https://www.facebook.com/profile.php?id=61575271824165.",
+        "The Facebook link opens in a new tab and includes rel=\"noopener noreferrer\".",
+        "The Facebook link is present anywhere the footer renders (including the main site and payment status pages).",
+        "The Facebook link has accessible labeling (e.g., aria-label=\"Facebook\")."
+      ]
+    }
+  ],
   "constraints": [
-    "Do not create a separate Terms & Conditions page/route; keep it as a section within the existing single-page layout using the deep-link id \"terms\".",
-    "Do not modify any files under frontend/src/components/ui or other immutable frontend paths listed in SYSTEM_CONTEXT."
+    "Do not modify any files under frontend/src/components/ui or other paths listed as immutable in SYSTEM_CONTEXT.",
+    "Keep all backend logic within the existing single Motoko actor; no new backend canisters/services."
   ],
   "nonGoals": [
-    "Adding new legal policy sections beyond Terms & Conditions (e.g., Privacy Policy) unless explicitly requested.",
-    "Changing backend data models or adding backend storage for Terms & Conditions content."
+    "Adding or changing any other social media links (Instagram/Twitter/etc.).",
+    "Adding or displaying the provided GST Registration Number (05AOOPP7917D2ZO) anywhere in the UI unless explicitly requested later.",
+    "Any changes to backend data models, persistence, or APIs."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [
-      "Use English for any user-facing text."
-    ],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }
