@@ -157,23 +157,108 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Product Related Functions (Public - no auth required)
+  // Product Related Functions
 
-  public query ({ caller }) func getProduct(id : Nat) : async Product {
+  // Admin-only: Add new product
+  public shared ({ caller }) func addProduct(
+    name : Text,
+    category : ProductCategory,
+    description : Text,
+    price : ?Nat,
+    image : ?Storage.ExternalBlob,
+    imageUrl : ?Text,
+    isAvailable : Bool
+  ) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can add products");
+    };
+
+    let id = productCounter;
+    productCounter += 1;
+
+    let product : Product = {
+      id;
+      name;
+      category;
+      description;
+      price;
+      image;
+      imageUrl;
+      isAvailable;
+      createdAt = Time.now();
+    };
+
+    products.add(id, product);
+    id;
+  };
+
+  // Admin-only: Update existing product
+  public shared ({ caller }) func updateProduct(
+    id : Nat,
+    name : Text,
+    category : ProductCategory,
+    description : Text,
+    price : ?Nat,
+    image : ?Storage.ExternalBlob,
+    imageUrl : ?Text,
+    isAvailable : Bool
+  ) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can update products");
+    };
+
+    switch (products.get(id)) {
+      case (null) { Runtime.trap("Product not found") };
+      case (?existingProduct) {
+        let updatedProduct : Product = {
+          id;
+          name;
+          category;
+          description;
+          price;
+          image;
+          imageUrl;
+          isAvailable;
+          createdAt = existingProduct.createdAt;
+        };
+        products.add(id, updatedProduct);
+      };
+    };
+  };
+
+  // Admin-only: Delete product
+  public shared ({ caller }) func deleteProduct(id : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can delete products");
+    };
+
+    switch (products.get(id)) {
+      case (null) { Runtime.trap("Product not found") };
+      case (?_) {
+        products.remove(id);
+      };
+    };
+  };
+
+  // Public: Get single product
+  public query func getProduct(id : Nat) : async Product {
     switch (products.get(id)) {
       case (null) { Runtime.trap("Product not found") };
       case (?product) { product };
     };
   };
 
-  public query ({ caller }) func getProductsByCategory(category : ProductCategory) : async [Product] {
+  // Public: Get products by category
+  public query func getProductsByCategory(category : ProductCategory) : async [Product] {
     products.values().toArray().filter(func(product) { product.category == category and product.isAvailable });
   };
 
-  public query ({ caller }) func getAllAvailableProducts() : async [Product] {
+  // Public: Get all available products
+  public query func getAllAvailableProducts() : async [Product] {
     products.values().toArray().filter(func(product) { product.isAvailable });
   };
 
+  // Admin-only: Get all products (including unavailable)
   public query ({ caller }) func getAllProducts() : async [Product] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can view all products");
@@ -183,8 +268,8 @@ actor {
 
   // Contact Submissions
 
-  public shared ({ caller }) func submitContactForm(name : Text, email : Text, message : Text) : async () {
-    // Public endpoint - no auth required
+  // Public: Submit contact form
+  public shared func submitContactForm(name : Text, email : Text, message : Text) : async () {
     let id = submissionCounter.toText();
     submissionCounter += 1;
 
@@ -198,6 +283,7 @@ actor {
     contactSubmissions.add(id, submission);
   };
 
+  // Admin-only: Get all contact submissions
   public query ({ caller }) func getAllContactSubmissions() : async [ContactSubmission] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can view contact submissions");
@@ -252,6 +338,7 @@ actor {
     id;
   };
 
+  // Admin-only: Get all orders
   public query ({ caller }) func getOrders() : async [PaymentOrder] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can view all orders");
@@ -259,8 +346,8 @@ actor {
     orders.values().toArray();
   };
 
+  // Public: Create order (anyone can initiate checkout)
   public shared ({ caller }) func createOrder(email : Text, phone : Text, billingAddress : Text, fullName : Text, items : [Stripe.ShoppingItem], amountCents : ?Nat, paymentCurrency : ?Text) : async Nat {
-    // Public endpoint - anyone can create an order (initiate checkout)
     let id = getNewOrderId();
     let customerPrincipal = if (caller.isAnonymous()) { null } else { ?caller };
 
@@ -282,6 +369,7 @@ actor {
     id;
   };
 
+  // Admin-only: Update order status
   public shared ({ caller }) func updateOrderStatus(orderId : Nat, status : OrderStatus, stripeSessionId : ?Text) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can update order status");
@@ -299,6 +387,7 @@ actor {
     };
   };
 
+  // Owner or Admin: Get specific order
   public query ({ caller }) func getOrder(orderId : Nat) : async PaymentOrder {
     switch (orders.get(orderId)) {
       case (null) { Runtime.trap("Order not found") };
@@ -316,5 +405,19 @@ actor {
         order;
       };
     };
+  };
+
+  // User-only: Get caller's orders
+  public query ({ caller }) func getMyOrders() : async [PaymentOrder] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only authenticated users can view their orders");
+    };
+
+    orders.values().toArray().filter(func(order) {
+      switch (order.customerPrincipal) {
+        case (null) { false };
+        case (?principal) { principal == caller };
+      };
+    });
   };
 };

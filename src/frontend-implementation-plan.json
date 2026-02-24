@@ -1,253 +1,277 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "DQM Computer Store Frontend Implementation",
+  "title": "PC Computer Platform - Frontend Implementation",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Implement user authentication UI with Internet Identity integration and user profile setup",
+      "summary": "Implement Internet Identity authentication UI with login/logout flow",
       "acceptanceCriteria": [
-        "Users can log in using Internet Identity passkey authentication",
-        "User session persists across page refreshes",
-        "Login state is reflected in the UI (show logged-in user identity)",
-        "Users can log out successfully"
+        "Users can log in using Internet Identity",
+        "Users can log out and session is cleared",
+        "Authentication state persists across page refreshes",
+        "Unauthenticated users are prompted to log in for protected features"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/LoginButton.tsx",
-          "operation": "create",
-          "description": "Create LoginButton component that uses the authorization component's authentication system. The component handles login/logout actions, shows current login status, and clears the query cache on logout. Verify the authorization component's usage instructions before implementing."
+          "operation": "modify",
+          "description": "Verify the LoginButton component properly handles Internet Identity login/logout flow with loading states and query cache clearing on logout. Use the authorization component's authentication requirements."
+        },
+        {
+          "path": "frontend/src/hooks/useInternetIdentity.ts",
+          "operation": "modify",
+          "description": "Ensure the Internet Identity hook manages authentication state, identity persistence, and delegation validation correctly with proper error handling."
         },
         {
           "path": "frontend/src/components/ProfileSetupModal.tsx",
-          "operation": "create",
-          "description": "Create ProfileSetupModal component that prompts new users to enter their name on first login. The modal uses the authorization component's getCallerUserProfile and saveCallerUserProfile capabilities. Include proper loading state handling to prevent modal flashing. Verify the authorization component's usage instructions before implementing."
+          "operation": "modify",
+          "description": "Verify the ProfileSetupModal prompts authenticated users without profiles to set up their name and optional contact information, preventing dismissal until completed. Use the authorization component to check for existing profiles."
         },
         {
           "path": "frontend/src/hooks/useUserProfile.ts",
-          "operation": "create",
-          "description": "Create custom hook useGetCallerUserProfile that fetches the current user's profile using the authorization component. Include proper dependency tracking on actor availability to prevent flashing states. Also create useSaveCallerUserProfile mutation hook. Verify the authorization component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Wire LoginButton into the Header component's navigation area, replacing or augmenting existing navigation elements to show authentication status and user name when logged in."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire ProfileSetupModal into App.tsx to display when a logged-in user has no profile. Ensure modal only shows after actor is available and profile query has completed to avoid flashing."
+          "description": "Ensure profile hooks properly fetch and save user profiles with correct loading states to prevent modal flashing. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Display product catalog with categories, images, and product details from backend",
+      "summary": "Create admin panel UI for product management with add/edit/delete capabilities",
       "acceptanceCriteria": [
-        "Backend stores product data including name, description, price, category, and image URL",
-        "Frontend displays products organized by categories",
-        "Each product shows image, name, price, and description",
-        "At least 8-10 sample computer products are pre-loaded",
-        "Products include various categories (desktops, laptops, components, peripherals)"
+        "Admin users can access a dedicated admin panel",
+        "Admins can create new products with all required fields",
+        "Admins can edit existing product information",
+        "Admins can delete products from the catalog",
+        "Product changes are immediately reflected in the customer-facing catalog"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Products.tsx",
-          "operation": "modify",
-          "description": "Enhance Products component to fetch products by category using getAllProducts or getProductsByCategory backend capabilities. Display product cards showing image (using blob-storage component's ExternalBlob.getDirectURL() for images), name, price formatted as currency, description, and an 'Add to Cart' button. Use the generated product images at frontend/public/assets/generated/desktop-computer.dim_400x300.jpg, frontend/public/assets/generated/laptop-computer.dim_400x300.jpg, frontend/public/assets/generated/computer-accessories.dim_400x300.jpg, and frontend/public/assets/generated/networking-equipment.dim_400x300.jpg as fallbacks when backend images are unavailable. Organize products into category sections (Computers, Communication, Accessories, Networking, Services). Verify the blob-storage component's usage instructions before implementing image display."
+          "path": "frontend/src/components/AdminPanel.tsx",
+          "operation": "create",
+          "description": "Create an admin panel component that displays only for admin users. Include product management interface with forms for adding/editing products (name, description, price, category, image upload using blob-storage component). Display existing products in a table/grid with edit and delete actions. Verify the blob-storage component's usage instructions before implementing image uploads."
         },
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/hooks/useProductMutations.ts",
+          "operation": "create",
+          "description": "Create custom React Query hooks for product mutations including addProduct, updateProduct, and deleteProduct. Handle ExternalBlob image uploads and invalidate product queries on successful mutations."
+        },
+        {
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Add or enhance product query hooks including useGetAllProducts and useGetProductsByCategory that fetch from backend using React Query. Ensure proper caching and refetch strategies."
+          "description": "Add route for /admin path that renders the AdminPanel component. Ensure the route is protected and only accessible to admin users."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add Admin link in the navigation menu that is only visible to authenticated admin users. Link should navigate to /admin route."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Implement shopping cart UI with add/update/remove functionality and cart persistence",
+      "summary": "Build shopping cart UI with add/remove/quantity management and total calculation",
       "acceptanceCriteria": [
-        "Users can add products to cart from product listings",
-        "Cart displays all added items with quantity and individual prices",
-        "Users can update item quantities in the cart",
+        "Users can add products to cart from the product catalog",
+        "Users can increase or decrease item quantities in the cart",
         "Users can remove items from the cart",
-        "Cart shows total price calculation",
-        "Cart persists for logged-in users across sessions",
-        "Cart is accessible from a dedicated cart page or modal"
+        "Cart displays subtotal and total price",
+        "Cart state persists during the session"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useCart.ts",
-          "operation": "create",
-          "description": "Create cart management hook that stores cart state in React state and localStorage for persistence. Include functions for addToCart, updateQuantity, removeFromCart, clearCart, and calculate cart total. Cart data structure should match ShoppingItem[] format required by Stripe checkout."
-        },
-        {
           "path": "frontend/src/components/Cart.tsx",
-          "operation": "create",
-          "description": "Create Cart component that displays all cart items in a modal or sheet overlay. Show product name, quantity controls (increment/decrement buttons), individual item price, remove button, and cart total. Include a 'Proceed to Checkout' button that navigates to the checkout page. Display empty cart state when no items are present."
+          "operation": "modify",
+          "description": "Verify the Cart component displays all cart items with quantity controls (increase/decrease), remove buttons, and calculates subtotal and total price. Ensure prices are formatted in INR (₹)."
         },
         {
           "path": "frontend/src/components/CartButton.tsx",
-          "operation": "create",
-          "description": "Create CartButton component showing a cart icon with item count badge. Use the generated cart icon at frontend/public/assets/generated/cart-icon.dim_64x64.png or an icon from lucide-react. Clicking opens the Cart modal/sheet."
+          "operation": "modify",
+          "description": "Verify the CartButton displays a shopping cart icon with a badge showing the current item count and opens the Cart sheet when clicked."
         },
         {
-          "path": "frontend/src/components/Header.tsx",
+          "path": "frontend/src/hooks/useCart.ts",
           "operation": "modify",
-          "description": "Wire CartButton into the Header component's navigation area to provide global cart access."
+          "description": "Ensure the cart hook manages state in localStorage with functions to add items, remove items, update quantities, clear cart, and calculate totals. Verify cart state persists across sessions."
         },
         {
           "path": "frontend/src/components/Products.tsx",
           "operation": "modify",
-          "description": "Wire 'Add to Cart' buttons in product cards to use the addToCart function from useCart hook. Show success feedback (toast or temporary button state change) when item is added."
+          "description": "Ensure each product card includes an 'Add to Cart' button that calls the useCart hook's addItem function. Display visual feedback when items are added."
         }
       ]
     },
     {
       "id": "REQ-4",
-      "summary": "Build checkout UI with Stripe payment integration and order creation",
+      "summary": "Implement checkout UI flow with shipping form and contact information display",
       "acceptanceCriteria": [
-        "Checkout page collects shipping address (street, city, state, postal code, country)",
-        "Checkout page collects contact information (name, email, phone)",
-        "Integration with Stripe creates a checkout session for the cart total",
-        "User is redirected to Stripe hosted checkout page",
-        "Successful payment creates an order record in the backend",
-        "User is redirected to success page after payment",
-        "User is redirected to failure page if payment fails"
+        "Checkout page collects shipping address and contact information",
+        "Contact details 9315906829 and panerudaya11@gmail.com are displayed on the contact section",
+        "Users cannot proceed to payment without completing required fields",
+        "Order summary shows items, quantities, and total price before payment"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Checkout.tsx",
-          "operation": "create",
-          "description": "Create Checkout component with form fields for contact information (name, email, phone) and billing address (street, city, state, postal code, country). Use the stripe component to create a checkout session by calling useCreateCheckoutSession with cart items. On successful session creation, redirect to session.url using window.location.href (never use router navigation for Stripe URLs). Show loading state during session creation. Include validation for all required fields. Verify the stripe component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/StripeSetup.tsx",
-          "operation": "create",
-          "description": "Create StripeSetup component that checks if Stripe is configured using isStripeConfigured backend capability. If not configured and user is admin, display admin panel requesting Stripe secret key and allowed countries. Use setStripeConfiguration to save the configuration. Do not show this panel if Stripe is already configured. Verify the stripe component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useCreateCheckoutSession.ts",
           "operation": "modify",
-          "description": "Enhance existing useCreateCheckoutSession hook to ensure it properly validates that the parsed Stripe session includes a non-empty url field. If url is missing, throw an error and do not redirect. Verify the stripe component's usage instructions before implementing."
+          "description": "Verify the Checkout component displays shipping address form (full name, email, phone, billing address) with validation, order summary with cart items and total price in INR, and payment button that triggers Stripe checkout. Ensure required field validation prevents proceeding without completing all fields."
         },
         {
-          "path": "frontend/src/components/PaymentSuccess.tsx",
+          "path": "frontend/src/components/Contact.tsx",
           "operation": "modify",
-          "description": "Enhance PaymentSuccess component to display order confirmation details. Include order number extraction from URL parameters if available, clear the cart using clearCart from useCart, and provide a button to continue shopping that navigates to the products section."
+          "description": "Ensure the Contact section displays the required contact details: phone number 9315906829 and email panerudaya11@gmail.com. Include these in contact information cards along with the contact form."
         },
         {
-          "path": "frontend/src/components/PaymentFailure.tsx",
+          "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Enhance PaymentFailure component to display a helpful error message explaining payment was not completed. Include a button to return to checkout or cart to retry the payment."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire Checkout component into the application by adding a checkout route or section. Ensure /payment-success and /payment-failure routes are properly registered to render PaymentSuccess and PaymentFailure components as required by the stripe component. Add StripeSetup component to display conditionally for admin users when Stripe is not configured."
+          "description": "Verify the Footer displays contact information including phone 9315906829 and email panerudaya11@gmail.com in the contact details section."
         }
       ]
     },
     {
       "id": "REQ-5",
-      "summary": "Implement order history UI showing past orders with status tracking",
+      "summary": "Integrate Stripe payment UI with checkout session creation and redirects",
       "acceptanceCriteria": [
-        "Backend stores orders with status field supporting Pending, Processing, Shipped, Delivered",
-        "Users can view their complete order history",
-        "Each order shows order number, date, items purchased, total amount, and current status",
-        "Order status is visually indicated with appropriate styling",
-        "Orders are sorted by date (most recent first)"
+        "Stripe checkout session is created when user proceeds to payment",
+        "Users are redirected to Stripe payment page",
+        "Successful payments redirect to success page",
+        "Failed or cancelled payments redirect to failure page",
+        "Test mode allows demonstration without real payments"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/OrderHistory.tsx",
-          "operation": "create",
-          "description": "Create OrderHistory component that displays all orders for the logged-in user. Fetch orders using getOrders backend capability. Display each order with order ID, creation date formatted as human-readable, items list, total amount formatted as currency, and current status with visual indicators (color coding or badges for Pending/Processing/Shipped/Delivered states). Sort orders by date descending. Show empty state when user has no orders."
+          "path": "frontend/src/components/StripeSetup.tsx",
+          "operation": "modify",
+          "description": "Verify the StripeSetup modal prompts admin users to configure Stripe with secret key and allowed countries when Stripe is not yet configured. Use the stripe component's configuration requirements. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/hooks/useCreateCheckoutSession.ts",
           "operation": "modify",
-          "description": "Add useGetOrders query hook that fetches orders from backend using getOrders capability with proper React Query configuration for caching and refetching."
+          "description": "Ensure the checkout session hook creates a Stripe session with shopping items, success URL (/payment-success), and cancel URL (/payment-failure). Parse the JSON response, validate the session URL exists, and return the session object. Verify the stripe component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/components/Header.tsx",
+          "path": "frontend/src/components/Checkout.tsx",
           "operation": "modify",
-          "description": "Wire navigation link to OrderHistory in the Header component. Add 'My Orders' or 'Order History' link in the navigation menu that becomes visible when user is logged in."
+          "description": "Add Stripe checkout session creation on payment button click. Use useCreateCheckoutSession hook, validate the returned session URL, and redirect to the Stripe URL using window.location.href (not router navigation). Handle loading and error states appropriately."
+        },
+        {
+          "path": "frontend/src/components/PaymentSuccess.tsx",
+          "operation": "modify",
+          "description": "Verify the PaymentSuccess component clears the cart, displays a success message, and provides a button to continue shopping. This page is reached after successful Stripe payment."
+        },
+        {
+          "path": "frontend/src/components/PaymentFailure.tsx",
+          "operation": "modify",
+          "description": "Verify the PaymentFailure component displays an error message explaining the payment was cancelled or failed, informs users no charges were made, and provides a button to return to shop."
         },
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Wire OrderHistory component into the application by adding an orders route or section accessible to logged-in users."
+          "description": "Verify routes exist for /payment-success and /payment-failure paths that render PaymentSuccess and PaymentFailure components respectively. Ensure StripeSetup modal is initialized in the app root."
         }
       ]
     },
     {
       "id": "REQ-6",
-      "summary": "Display contact information in footer with clickable phone and email links",
+      "summary": "Create order tracking UI displaying order history with status badges",
       "acceptanceCriteria": [
-        "Footer displays phone number 9315906829 with tel: link",
-        "Footer displays email panerudaya11@gmail.com with mailto: link",
-        "Contact details are clearly visible and properly formatted",
-        "Links are functional on both desktop and mobile"
+        "Users can view their order history after authentication",
+        "Each order shows status badge with current state",
+        "Orders display with order ID, date, items, and total price",
+        "Status progresses through Pending → Processing → Shipped → Delivered",
+        "Only authenticated users can access order history"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Footer.tsx",
+          "path": "frontend/src/components/OrderHistory.tsx",
           "operation": "modify",
-          "description": "Enhance Footer component to prominently display contact information. Add phone number 9315906829 wrapped in <a href=\"tel:9315906829\"> and email panerudaya11@gmail.com wrapped in <a href=\"mailto:panerudaya11@gmail.com\">. Ensure contact section is clearly labeled and styled for visibility. Test that links work on mobile devices."
+          "description": "Verify the OrderHistory component fetches and displays user orders with authentication guard. Show login prompt for unauthenticated users. Display each order with ID, date (formatted), items list, total price in INR, and status badge. Map backend OrderStatus (pending/completed/failed) to display statuses (Pending/Processing/Shipped/Delivered)."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Ensure the useGetMyOrders hook fetches the authenticated user's order history from the backend and handles loading/error states correctly."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Verify the /orders route exists and renders the OrderHistory component. Ensure the route is accessible from the navigation."
         }
       ]
     },
     {
       "id": "REQ-7",
-      "summary": "Apply cohesive visual theme with warm earth tones and terracotta accents across all pages",
+      "summary": "Display product catalog UI with category grouping and product details",
       "acceptanceCriteria": [
-        "Color palette uses warm earth tones (terracotta, sand, warm grays) consistently",
-        "Typography is modern and readable across all components",
-        "Visual hierarchy clearly distinguishes headings, body text, and interactive elements",
-        "Design feels cohesive across products, cart, checkout, and order pages",
-        "Interactive elements have clear hover and active states"
+        "Products are displayed in a grid layout",
+        "Products are grouped by category (laptops, desktops, accessories, etc.)",
+        "Each product shows image, name, description, and price",
+        "Prices are formatted in Indian Rupees (₹)",
+        "Users can browse all available products"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Products.tsx",
+          "operation": "modify",
+          "description": "Verify the Products component fetches available products, groups them by category, and displays them in a responsive grid layout. Each product card should show image (using ExternalBlob or imageUrl), name, description, price formatted in INR (₹), and an 'Add to Cart' button. Handle both blob-storage images and URL-based images. Verify the blob-storage component's usage instructions before implementing image display."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Ensure the useGetAllAvailableProducts hook fetches only available products from the backend for the customer-facing catalog. Verify proper loading and error state handling."
+        },
+        {
+          "path": "frontend/src/components/Hero.tsx",
+          "operation": "modify",
+          "description": "Verify the Hero section includes a call-to-action button that scrolls to the Products section or navigates to the product catalog."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply modern, professional design theme with tech retail color scheme",
+      "acceptanceCriteria": [
+        "Design uses a professional color palette suitable for tech retail",
+        "Typography is clean and readable across all components",
+        "Spacing and layout are consistent throughout the application",
+        "Design works well on both light and dark modes",
+        "Visual hierarchy clearly guides users through shopping flow"
       ],
       "file_operations": [
         {
           "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Update CSS custom properties and Tailwind configuration to define warm earth tone color palette. Set primary colors to terracotta shades (e.g., --primary: oklch(0.60 0.15 25)), secondary to warm sand tones, and neutral grays with warm undertones. Update color definitions for both light and dark themes to maintain warmth. Apply modern, readable typography settings with appropriate font family, sizing, and line height."
+          "description": "Verify the global styles use the custom terracotta and sand color palette defined in CSS variables. Ensure the color scheme is professional and suitable for tech retail. Verify both light and dark mode color definitions work correctly."
         },
         {
           "path": "frontend/tailwind.config.js",
           "operation": "modify",
-          "description": "Extend Tailwind theme with custom color values matching warm earth tone palette. Define terracotta as primary color (e.g., '#D4745B'), sand/beige as secondary (e.g., '#E8D5B7'), and warm grays for neutral tones. Configure hover and active state variants to ensure interactive elements have clear visual feedback."
-        },
-        {
-          "path": "frontend/src/components/Products.tsx",
-          "operation": "modify",
-          "description": "Apply themed styling to product cards using terracotta accents for buttons, warm backgrounds, and proper hover states. Ensure pricing and product information have clear visual hierarchy."
-        },
-        {
-          "path": "frontend/src/components/Cart.tsx",
-          "operation": "modify",
-          "description": "Apply themed styling to cart interface with terracotta call-to-action buttons, warm card backgrounds for cart items, and clear visual hierarchy for totals and actions."
-        },
-        {
-          "path": "frontend/src/components/Checkout.tsx",
-          "operation": "modify",
-          "description": "Apply themed styling to checkout form with warm backgrounds, terracotta submit button, and clear form field styling that matches the overall theme."
-        },
-        {
-          "path": "frontend/src/components/OrderHistory.tsx",
-          "operation": "modify",
-          "description": "Apply themed styling to order cards with status badges using terracotta for active/shipped orders and warm gray tones for completed orders. Ensure visual hierarchy distinguishes order details clearly."
+          "description": "Verify the Tailwind configuration extends the theme with terracotta and sand color palettes, container settings, and typography plugin. Ensure the configuration supports both light and dark modes."
         },
         {
           "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Apply themed styling to header with warm background color, terracotta hover states for navigation links, and cohesive branding elements."
+          "description": "Verify the Header uses consistent spacing, typography, and the terracotta/sand color scheme. Ensure responsive design works on mobile and desktop with clean navigation layout."
         },
         {
-          "path": "frontend/src/components/Hero.tsx",
+          "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Update Hero component to use the generated hero image at frontend/public/assets/generated/dqm-hero.dim_1600x600.jpg as the background. Apply terracotta color to call-to-action buttons with clear hover states. Ensure text overlays are readable with proper contrast against the hero image."
+          "description": "Verify the Footer maintains consistent design with the Header using the same color scheme and spacing standards. Ensure typography is readable and layout is well-organized."
+        },
+        {
+          "path": "frontend/src/components/Products.tsx",
+          "operation": "modify",
+          "description": "Verify product cards use consistent spacing, shadows, and the terracotta color scheme for buttons and accents. Ensure grid layout is responsive and visually balanced."
+        },
+        {
+          "path": "frontend/src/components/Cart.tsx",
+          "operation": "modify",
+          "description": "Verify the Cart sheet uses consistent design patterns with proper spacing, typography, and color scheme. Ensure the layout clearly presents cart items and totals."
+        },
+        {
+          "path": "frontend/src/components/Checkout.tsx",
+          "operation": "modify",
+          "description": "Verify the Checkout page uses a clean layout with clear visual hierarchy guiding users through the form fields to payment. Apply consistent spacing and typography."
         }
       ]
     }

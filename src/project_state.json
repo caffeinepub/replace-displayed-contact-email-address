@@ -1,62 +1,45 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Full-stack e-commerce platform for computer products with user authentication, shopping cart, checkout, order tracking, and secure Stripe payments",
+  "summary": "Full-stack computer product e-commerce platform with user authentication, admin panel for product management, shopping cart, checkout, order tracking, and Stripe payment integration",
   "architectural_notes": [
-    "Using Internet Identity for secure passkey-based user authentication",
-    "Stripe integration for secure online payment processing",
-    "Sample computer products pre-loaded in catalog",
-    "Basic order status workflow: Pending → Processing → Shipped → Delivered"
+    "Using Internet Identity for user authentication",
+    "Stripe integration for payment processing",
+    "Admin panel separated from customer-facing interface",
+    "Order status workflow: Pending → Processing → Shipped → Delivered"
   ],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Computer desktop setup hero background image with warm lighting (hero-computers.dim_1920x800.png)\n- Shopping cart icon in terracotta color (cart-icon.dim_64x64.png)\n- Desktop computer product photo on white background (desktop-pc.dim_400x400.png)\n- Laptop computer product photo on white background (laptop.dim_400x400.png)\n- Computer components (RAM, motherboard) product photo (components.dim_400x400.png)\n- Gaming peripherals (keyboard, mouse) product photo (peripherals.dim_400x400.png)",
   "existing_features": [
     {
-      "id": "feature-implement-user-authentication-system-using-internet-identity-allowing-users-to-securely-log-in-and-maintain-their-session-across-the-platform",
-      "title": "Implement user authentication system using Internet Identity allowing users to securely log in and maintain their session across the platform",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-product-catalog-system-for-computer-products-with-categories-descriptions-pricing-and-product-images-pre-populate-with-sample-computer-products-including-desktops-laptops-components-and-peripherals",
-      "title": "Create product catalog system for computer products with categories, descriptions, pricing, and product images. Pre-populate with sample computer products including desktops, laptops, components, and peripherals",
+      "id": "feature-create-an-admin-panel-that-allows-administrators-to-add-edit-and-delete-computer-products-with-fields-for-name-description-price-category-and-image",
+      "title": "Create an admin panel that allows administrators to add, edit, and delete computer products with fields for name, description, price, category, and image",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-shopping-cart-functionality-allowing-users-to-add-products-update-quantities-remove-items-and-view-cart-total-cart-must-persist-for-logged-in-users",
-      "title": "Implement shopping cart functionality allowing users to add products, update quantities, remove items, and view cart total. Cart must persist for logged-in users",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-checkout-system-with-stripe-payment-integration-collect-shipping-address-and-contact-information-during-checkout-process-payment-through-stripe-and-create-order-record-upon-successful-payment",
-      "title": "Build checkout system with Stripe payment integration. Collect shipping address and contact information during checkout, process payment through Stripe, and create order record upon successful payment",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-order-tracking-system-showing-order-history-for-logged-in-users-with-basic-status-progression-pending-processing-shipped-delivered-each-order-displays-products-purchased-total-amount-order-date-and-current-status",
-      "title": "Implement order tracking system showing order history for logged-in users with basic status progression: Pending, Processing, Shipped, Delivered. Each order displays products purchased, total amount, order date, and current status",
+      "id": "feature-integrate-stripe-payment-processing-to-handle-secure-online-payments-with-test-mode-support",
+      "title": "Integrate Stripe payment processing to handle secure online payments with test mode support",
       "reqIds": [
         "REQ-5"
       ],
       "version": 1
     },
     {
-      "id": "feature-design-a-cohesive-visual-theme-using-warm-earth-tones-with-terracotta-accents-and-clean-modern-typography-apply-consistent-styling-across-all-pages-including-product-cards-cart-checkout-and-order-tracking-interfaces",
-      "title": "Design a cohesive visual theme using warm earth tones with terracotta accents and clean modern typography. Apply consistent styling across all pages including product cards, cart, checkout, and order tracking interfaces",
+      "id": "feature-create-an-order-tracking-system-that-displays-order-history-with-status-updates-pending-processing-shipped-and-delivered",
+      "title": "Create an order tracking system that displays order history with status updates: Pending, Processing, Shipped, and Delivered",
       "reqIds": [
-        "REQ-7"
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-modern-professional-visual-design-with-a-cohesive-color-scheme-appropriate-for-a-technology-retail-business-using-clean-typography-and-consistent-spacing-throughout-the-interface",
+      "title": "Apply a modern, professional visual design with a cohesive color scheme appropriate for a technology retail business, using clean typography and consistent spacing throughout the interface",
+      "reqIds": [
+        "REQ-8"
       ],
       "version": 1
     }
@@ -64,50 +47,75 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "User authentication system with Internet Identity",
+      "summary": "User authentication with Internet Identity login",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "id": "AR-2",
-      "summary": "Product catalog with browsing and search functionality",
+      "summary": "Admin panel for adding/editing computer products",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "id": "AR-3",
       "summary": "Shopping cart functionality",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "id": "AR-4",
-      "summary": "Checkout system with Stripe payment integration",
+      "summary": "Checkout system with contact details (phone: 9315906829, email: panerudaya11@gmail.com)",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "id": "AR-5",
-      "summary": "Order tracking with basic status updates (Pending, Processing, Shipped, Delivered)",
+      "summary": "Order tracking with status updates (Pending → Processing → Shipped → Delivered)",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "id": "AR-6",
-      "summary": "Contact details in footer (Phone: 9315906829, Email: panerudaya11@gmail.com)",
+      "summary": "Stripe payment integration for secure online payments",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     },
     {
-      "id": "AR-12",
-      "summary": "Display contact details in the footer: Phone number 9315906829 and email address panerudaya11@gmail.com. Make email and phone clickable (mailto and tel links)",
+      "id": "AR-7",
+      "summary": "Implement user authentication using Internet Identity, allowing users to securely log in and log out",
       "reqIds": [
-        "REQ-6"
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Build a shopping cart system that allows users to add products, adjust quantities, remove items, and view the total price",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Implement a checkout flow that collects shipping information and processes payments, displaying contact details phone: 9315906829 and email: panerudaya11@gmail.com",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Display a product catalog showcasing computer products organized by categories with product images, descriptions, and prices in INR",
+      "reqIds": [
+        "REQ-7"
       ],
       "status": "pending"
     }
   ],
-  "projectName": "DQM Computer Store",
+  "gameProjectType": "none",
+  "projectName": "PC Computer Platform",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

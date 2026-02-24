@@ -1,6 +1,6 @@
 {
-  "frontend/src/App.tsx": "Main application component with QueryClientProvider, ThemeProvider, and path-based routing for home, checkout, orders, payment-success, and payment-failure pages, including ProfileSetupModal and StripeSetup components.",
-  "frontend/src/components/Header.tsx": "Fixed navigation header with logo, menu items, cart button, login button, user profile display, and My Orders link for authenticated users.",
+  "frontend/src/App.tsx": "Main application component with QueryClientProvider, ThemeProvider, and RouterProvider for routing between home, checkout, orders, payment-success, payment-failure, and admin pages, including ProfileSetupModal and StripeSetup components with Toaster for notifications.",
+  "frontend/src/components/Header.tsx": "Fixed navigation header with logo, menu items with smooth scrolling, cart button, login button, My Orders link for authenticated users, and Admin link visible only to admin users with responsive mobile menu.",
   "frontend/src/components/Hero.tsx": "Hero section with P C COMPUTER AND COMMUNICATION branding, background image from local asset dqm-hero.dim_1600x600.jpg, company introduction, Shop Now and Contact Us CTAs with smooth scrolling.",
   "frontend/src/components/Products.tsx": "Products section displaying available products grouped by category with Add to Cart functionality and toast notifications.",
   "frontend/src/components/About.tsx": "About section featuring P C COMPUTER AND COMMUNICATION description with two-column layout alternating text and images from local assets dqm-section-1 and dqm-section-2, highlighting quality solutions and expert service.",
@@ -29,5 +29,6 @@
   "frontend/src/components/Checkout.tsx": "Checkout page with contact information and billing address form that creates Stripe checkout session and redirects to Stripe hosted payment page.",
   "frontend/src/components/StripeSetup.tsx": "Admin-only modal for configuring Stripe payment integration with secret key and allowed countries, shown only when Stripe is not yet configured.",
   "frontend/src/components/OrderHistory.tsx": "Order history page displaying all user orders with status badges, order details, items, and totals sorted by date descending.",
-  "frontend/tailwind.config.js": "Tailwind configuration with warm earth tone color palette including terracotta and sand custom color scales, Inter font family, and extended theme tokens."
+  "frontend/tailwind.config.js": "Tailwind configuration with warm earth tone color palette including terracotta and sand custom color scales, Inter font family, and extended theme tokens.",
+  "frontend/src/components/AdminPanel.tsx": "Admin panel component for product management with add/edit/delete functionality, image upload support via ExternalBlob, and table display of all products with category badges and availability status using ProductCategory enum."
 }

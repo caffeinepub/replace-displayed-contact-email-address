@@ -124,9 +124,11 @@ export enum UserRole {
 }
 export interface backendInterface {
     addDocument(title: string, blob: ExternalBlob): Promise<string>;
+    addProduct(name: string, category: ProductCategory, description: string, price: bigint | null, image: ExternalBlob | null, imageUrl: string | null, isAvailable: boolean): Promise<bigint>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     createCheckoutSession(items: Array<ShoppingItem>, successUrl: string, cancelUrl: string): Promise<string>;
     createOrder(email: string, phone: string, billingAddress: string, fullName: string, items: Array<ShoppingItem>, amountCents: bigint | null, paymentCurrency: string | null): Promise<bigint>;
+    deleteProduct(id: bigint): Promise<void>;
     getAllAvailableProducts(): Promise<Array<Product>>;
     getAllContactSubmissions(): Promise<Array<ContactSubmission>>;
     getAllDocuments(): Promise<Array<Document>>;
@@ -134,6 +136,7 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getDocument(id: string): Promise<Document>;
+    getMyOrders(): Promise<Array<PaymentOrder>>;
     getOrder(orderId: bigint): Promise<PaymentOrder>;
     getOrders(): Promise<Array<PaymentOrder>>;
     getProduct(id: bigint): Promise<Product>;
@@ -147,4 +150,5 @@ export interface backendInterface {
     submitContactForm(name: string, email: string, message: string): Promise<void>;
     transform(input: TransformationInput): Promise<TransformationOutput>;
     updateOrderStatus(orderId: bigint, status: OrderStatus, stripeSessionId: string | null): Promise<void>;
+    updateProduct(id: bigint, name: string, category: ProductCategory, description: string, price: bigint | null, image: ExternalBlob | null, imageUrl: string | null, isAvailable: boolean): Promise<void>;
 }

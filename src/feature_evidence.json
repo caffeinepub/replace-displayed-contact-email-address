@@ -2,37 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-implement-user-authentication-system-using-internet-identity-allowing-users-to-securely-log-in-and-maintain-their-session-across-the-platform",
-      "featureTitle": "Implement user authentication system using Internet Identity allowing users to securely log in and maintain their session across the platform",
+      "featureId": "feature-create-an-admin-panel-that-allows-administrators-to-add-edit-and-delete-computer-products-with-fields-for-name-description-price-category-and-image",
+      "featureTitle": "Create an admin panel that allows administrators to add, edit, and delete computer products with fields for name, description, price, category, and image",
       "files": [
         "frontend/src/App.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/LoginButton.tsx",
-        "frontend/src/components/ProfileSetupModal.tsx",
-        "frontend/src/hooks/useUserProfile.ts"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "stripe@3.0.0",
-        "http-outcalls@3.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-product-catalog-system-for-computer-products-with-categories-descriptions-pricing-and-product-images-pre-populate-with-sample-computer-products-including-desktops-laptops-components-and-peripherals",
-      "featureTitle": "Create product catalog system for computer products with categories, descriptions, pricing, and product images. Pre-populate with sample computer products including desktops, laptops, components, and peripherals",
-      "files": [
-        "frontend/src/components/Products.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/AdminPanel.tsx",
+        "frontend/src/components/Header.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -51,64 +26,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-shopping-cart-functionality-allowing-users-to-add-products-update-quantities-remove-items-and-view-cart-total-cart-must-persist-for-logged-in-users",
-      "featureTitle": "Implement shopping cart functionality allowing users to add products, update quantities, remove items, and view cart total. Cart must persist for logged-in users",
+      "featureId": "feature-integrate-stripe-payment-processing-to-handle-secure-online-payments-with-test-mode-support",
+      "featureTitle": "Integrate Stripe payment processing to handle secure online payments with test mode support",
       "files": [
-        "frontend/src/components/Cart.tsx",
-        "frontend/src/components/CartButton.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/Products.tsx",
-        "frontend/src/hooks/useCart.ts"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "stripe@3.0.0",
-        "http-outcalls@3.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-build-checkout-system-with-stripe-payment-integration-collect-shipping-address-and-contact-information-during-checkout-process-payment-through-stripe-and-create-order-record-upon-successful-payment",
-      "featureTitle": "Build checkout system with Stripe payment integration. Collect shipping address and contact information during checkout, process payment through Stripe, and create order record upon successful payment",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Checkout.tsx",
-        "frontend/src/components/PaymentSuccess.tsx",
-        "frontend/src/components/StripeSetup.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "stripe@3.0.0",
-        "http-outcalls@3.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-order-tracking-system-showing-order-history-for-logged-in-users-with-basic-status-progression-pending-processing-shipped-delivered-each-order-displays-products-purchased-total-amount-order-date-and-current-status",
-      "featureTitle": "Implement order tracking system showing order history for logged-in users with basic status progression: Pending, Processing, Shipped, Delivered. Each order displays products purchased, total amount, order date, and current status",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/OrderHistory.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/App.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -127,16 +48,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-design-a-cohesive-visual-theme-using-warm-earth-tones-with-terracotta-accents-and-clean-modern-typography-apply-consistent-styling-across-all-pages-including-product-cards-cart-checkout-and-order-tracking-interfaces",
-      "featureTitle": "Design a cohesive visual theme using warm earth tones with terracotta accents and clean modern typography. Apply consistent styling across all pages including product cards, cart, checkout, and order tracking interfaces",
+      "featureId": "feature-create-an-order-tracking-system-that-displays-order-history-with-status-updates-pending-processing-shipped-and-delivered",
+      "featureTitle": "Create an order tracking system that displays order history with status updates: Pending, Processing, Shipped, and Delivered",
       "files": [
-        "frontend/src/components/Cart.tsx",
-        "frontend/src/components/Checkout.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/OrderHistory.tsx",
-        "frontend/src/components/Products.tsx",
-        "frontend/src/index.css",
-        "frontend/tailwind.config.js"
+        "frontend/src/App.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -150,7 +65,29 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-7"
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-modern-professional-visual-design-with-a-cohesive-color-scheme-appropriate-for-a-technology-retail-business-using-clean-typography-and-consistent-spacing-throughout-the-interface",
+      "featureTitle": "Apply a modern, professional visual design with a cohesive color scheme appropriate for a technology retail business, using clean typography and consistent spacing throughout the interface",
+      "files": [
+        "frontend/src/components/Header.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "stripe@3.0.0",
+        "http-outcalls@3.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
       ],
       "confidence": "high"
     }

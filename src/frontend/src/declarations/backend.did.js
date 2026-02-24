@@ -20,6 +20,13 @@ export const _CaffeineStorageRefillResult = IDL.Record({
   'topped_up_amount' : IDL.Opt(IDL.Nat),
 });
 export const ExternalBlob = IDL.Vec(IDL.Nat8);
+export const ProductCategory = IDL.Variant({
+  'Accessories' : IDL.Null,
+  'Computers' : IDL.Null,
+  'Communication' : IDL.Null,
+  'Networking' : IDL.Null,
+  'Services' : IDL.Null,
+});
 export const UserRole = IDL.Variant({
   'admin' : IDL.Null,
   'user' : IDL.Null,
@@ -33,13 +40,6 @@ export const ShoppingItem = IDL.Record({
   'productDescription' : IDL.Text,
 });
 export const Time = IDL.Int;
-export const ProductCategory = IDL.Variant({
-  'Accessories' : IDL.Null,
-  'Computers' : IDL.Null,
-  'Communication' : IDL.Null,
-  'Networking' : IDL.Null,
-  'Services' : IDL.Null,
-});
 export const Product = IDL.Record({
   'id' : IDL.Nat,
   'name' : IDL.Text,
@@ -146,6 +146,19 @@ export const idlService = IDL.Service({
   '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addDocument' : IDL.Func([IDL.Text, ExternalBlob], [IDL.Text], []),
+  'addProduct' : IDL.Func(
+      [
+        IDL.Text,
+        ProductCategory,
+        IDL.Text,
+        IDL.Opt(IDL.Nat),
+        IDL.Opt(ExternalBlob),
+        IDL.Opt(IDL.Text),
+        IDL.Bool,
+      ],
+      [IDL.Nat],
+      [],
+    ),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'createCheckoutSession' : IDL.Func(
       [IDL.Vec(ShoppingItem), IDL.Text, IDL.Text],
@@ -165,6 +178,7 @@ export const idlService = IDL.Service({
       [IDL.Nat],
       [],
     ),
+  'deleteProduct' : IDL.Func([IDL.Nat], [], []),
   'getAllAvailableProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
   'getAllContactSubmissions' : IDL.Func(
       [],
@@ -176,6 +190,7 @@ export const idlService = IDL.Service({
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getDocument' : IDL.Func([IDL.Text], [Document], ['query']),
+  'getMyOrders' : IDL.Func([], [IDL.Vec(PaymentOrder)], ['query']),
   'getOrder' : IDL.Func([IDL.Nat], [PaymentOrder], ['query']),
   'getOrders' : IDL.Func([], [IDL.Vec(PaymentOrder)], ['query']),
   'getProduct' : IDL.Func([IDL.Nat], [Product], ['query']),
@@ -205,6 +220,20 @@ export const idlService = IDL.Service({
       [],
       [],
     ),
+  'updateProduct' : IDL.Func(
+      [
+        IDL.Nat,
+        IDL.Text,
+        ProductCategory,
+        IDL.Text,
+        IDL.Opt(IDL.Nat),
+        IDL.Opt(ExternalBlob),
+        IDL.Opt(IDL.Text),
+        IDL.Bool,
+      ],
+      [],
+      [],
+    ),
 });
 
 export const idlInitArgs = [];
@@ -222,6 +251,13 @@ export const idlFactory = ({ IDL }) => {
     'topped_up_amount' : IDL.Opt(IDL.Nat),
   });
   const ExternalBlob = IDL.Vec(IDL.Nat8);
+  const ProductCategory = IDL.Variant({
+    'Accessories' : IDL.Null,
+    'Computers' : IDL.Null,
+    'Communication' : IDL.Null,
+    'Networking' : IDL.Null,
+    'Services' : IDL.Null,
+  });
   const UserRole = IDL.Variant({
     'admin' : IDL.Null,
     'user' : IDL.Null,
@@ -235,13 +271,6 @@ export const idlFactory = ({ IDL }) => {
     'productDescription' : IDL.Text,
   });
   const Time = IDL.Int;
-  const ProductCategory = IDL.Variant({
-    'Accessories' : IDL.Null,
-    'Computers' : IDL.Null,
-    'Communication' : IDL.Null,
-    'Networking' : IDL.Null,
-    'Services' : IDL.Null,
-  });
   const Product = IDL.Record({
     'id' : IDL.Nat,
     'name' : IDL.Text,
@@ -345,6 +374,19 @@ export const idlFactory = ({ IDL }) => {
     '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addDocument' : IDL.Func([IDL.Text, ExternalBlob], [IDL.Text], []),
+    'addProduct' : IDL.Func(
+        [
+          IDL.Text,
+          ProductCategory,
+          IDL.Text,
+          IDL.Opt(IDL.Nat),
+          IDL.Opt(ExternalBlob),
+          IDL.Opt(IDL.Text),
+          IDL.Bool,
+        ],
+        [IDL.Nat],
+        [],
+      ),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'createCheckoutSession' : IDL.Func(
         [IDL.Vec(ShoppingItem), IDL.Text, IDL.Text],
@@ -364,6 +406,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat],
         [],
       ),
+    'deleteProduct' : IDL.Func([IDL.Nat], [], []),
     'getAllAvailableProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
     'getAllContactSubmissions' : IDL.Func(
         [],
@@ -375,6 +418,7 @@ export const idlFactory = ({ IDL }) => {
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getDocument' : IDL.Func([IDL.Text], [Document], ['query']),
+    'getMyOrders' : IDL.Func([], [IDL.Vec(PaymentOrder)], ['query']),
     'getOrder' : IDL.Func([IDL.Nat], [PaymentOrder], ['query']),
     'getOrders' : IDL.Func([], [IDL.Vec(PaymentOrder)], ['query']),
     'getProduct' : IDL.Func([IDL.Nat], [Product], ['query']),
@@ -401,6 +445,20 @@ export const idlFactory = ({ IDL }) => {
       ),
     'updateOrderStatus' : IDL.Func(
         [IDL.Nat, OrderStatus, IDL.Opt(IDL.Text)],
+        [],
+        [],
+      ),
+    'updateProduct' : IDL.Func(
+        [
+          IDL.Nat,
+          IDL.Text,
+          ProductCategory,
+          IDL.Text,
+          IDL.Opt(IDL.Nat),
+          IDL.Opt(ExternalBlob),
+          IDL.Opt(IDL.Text),
+          IDL.Bool,
+        ],
         [],
         [],
       ),

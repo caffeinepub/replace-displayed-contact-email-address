@@ -124,6 +124,18 @@ export interface _SERVICE {
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addDocument' : ActorMethod<[string, ExternalBlob], string>,
+  'addProduct' : ActorMethod<
+    [
+      string,
+      ProductCategory,
+      string,
+      [] | [bigint],
+      [] | [ExternalBlob],
+      [] | [string],
+      boolean,
+    ],
+    bigint
+  >,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'createCheckoutSession' : ActorMethod<
     [Array<ShoppingItem>, string, string],
@@ -141,6 +153,7 @@ export interface _SERVICE {
     ],
     bigint
   >,
+  'deleteProduct' : ActorMethod<[bigint], undefined>,
   'getAllAvailableProducts' : ActorMethod<[], Array<Product>>,
   'getAllContactSubmissions' : ActorMethod<[], Array<ContactSubmission>>,
   'getAllDocuments' : ActorMethod<[], Array<Document>>,
@@ -148,6 +161,7 @@ export interface _SERVICE {
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getDocument' : ActorMethod<[string], Document>,
+  'getMyOrders' : ActorMethod<[], Array<PaymentOrder>>,
   'getOrder' : ActorMethod<[bigint], PaymentOrder>,
   'getOrders' : ActorMethod<[], Array<PaymentOrder>>,
   'getProduct' : ActorMethod<[bigint], Product>,
@@ -162,6 +176,19 @@ export interface _SERVICE {
   'transform' : ActorMethod<[TransformationInput], TransformationOutput>,
   'updateOrderStatus' : ActorMethod<
     [bigint, OrderStatus, [] | [string]],
+    undefined
+  >,
+  'updateProduct' : ActorMethod<
+    [
+      bigint,
+      string,
+      ProductCategory,
+      string,
+      [] | [bigint],
+      [] | [ExternalBlob],
+      [] | [string],
+      boolean,
+    ],
     undefined
   >,
 }
