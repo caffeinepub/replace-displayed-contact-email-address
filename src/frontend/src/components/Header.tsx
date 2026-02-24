@@ -2,10 +2,18 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import LoginButton from './LoginButton';
+import CartButton from './CartButton';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useGetCallerUserProfile } from '../hooks/useUserProfile';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { identity } = useInternetIdentity();
+  const { data: userProfile } = useGetCallerUserProfile();
+
+  const isAuthenticated = !!identity;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +68,12 @@ const Header = () => {
     }
   };
 
+  const navigateToOrders = () => {
+    setIsOpen(false);
+    window.history.pushState({}, '', '/orders');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
   const navItems = [
     { label: 'Home', id: 'home' },
     { label: 'Services', id: 'services' },
@@ -95,7 +109,7 @@ const Header = () => {
             </div>
           </button>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
               <Button
                 key={item.id}
@@ -106,6 +120,24 @@ const Header = () => {
                 {item.label}
               </Button>
             ))}
+            {isAuthenticated && (
+              <Button
+                variant="ghost"
+                onClick={navigateToOrders}
+                className="text-foreground hover:text-primary hover:bg-accent"
+              >
+                My Orders
+              </Button>
+            )}
+            <div className="flex items-center gap-2 ml-2">
+              <CartButton />
+              <LoginButton />
+            </div>
+            {isAuthenticated && userProfile && (
+              <div className="ml-2 text-sm text-muted-foreground">
+                {userProfile.name}
+              </div>
+            )}
           </nav>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -126,6 +158,24 @@ const Header = () => {
                     {item.label}
                   </Button>
                 ))}
+                {isAuthenticated && (
+                  <Button
+                    variant="ghost"
+                    onClick={navigateToOrders}
+                    className="justify-start text-lg"
+                  >
+                    My Orders
+                  </Button>
+                )}
+                <div className="pt-4 space-y-2">
+                  <CartButton />
+                  <LoginButton />
+                  {isAuthenticated && userProfile && (
+                    <p className="text-sm text-muted-foreground px-2">
+                      Welcome, {userProfile.name}
+                    </p>
+                  )}
+                </div>
               </nav>
             </SheetContent>
           </Sheet>

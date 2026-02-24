@@ -1,11 +1,15 @@
 # Specification
 
 ## Summary
-**Goal:** Add a Facebook social link in the site footer that points to the provided Facebook profile.
+**Goal:** Build a full-stack e-commerce platform for computer products with user authentication, product catalog, shopping cart, Stripe checkout, and order tracking.
 
 **Planned changes:**
-- Update the footer “Follow Us” (or equivalent) social links to include a Facebook link pointing to https://www.facebook.com/profile.php?id=61575271824165.
-- Ensure the Facebook link opens in a new tab with `rel="noopener noreferrer"` and includes accessible labeling (e.g., `aria-label="Facebook"`).
-- Ensure the Facebook link appears anywhere the footer is rendered (including the main site and payment status pages).
+- Implement Internet Identity authentication for secure user login and session management
+- Create product catalog system with categories (desktops, laptops, components, peripherals) and pre-populate with 8-10 sample computer products
+- Build shopping cart functionality with add/update/remove items and persistent cart for logged-in users
+- Integrate Stripe payment processing with checkout page collecting shipping address and contact information
+- Implement order tracking system with status progression (Pending → Processing → Shipped → Delivered)
+- Display contact details (phone: 9315906829, email: panerudaya11@gmail.com) in footer with clickable links
+- Apply warm earth tones with terracotta accents and modern typography for cohesive visual design
 
-**User-visible outcome:** Visitors see a Facebook icon/link in the footer and can open the specified Facebook profile in a new tab.
+**User-visible outcome:** Users can browse computer products, add items to cart, securely checkout with Stripe payment, and track their order status through a visually cohesive e-commerce platform.

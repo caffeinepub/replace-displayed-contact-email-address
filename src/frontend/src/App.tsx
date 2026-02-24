@@ -11,9 +11,15 @@ import Services from './components/Services';
 import WhyChooseUs from './components/WhyChooseUs';
 import PaymentSuccess from './components/PaymentSuccess';
 import PaymentFailure from './components/PaymentFailure';
+import Checkout from './components/Checkout';
+import OrderHistory from './components/OrderHistory';
 import Footer from './components/Footer';
+import ProfileSetupModal from './components/ProfileSetupModal';
+import StripeSetup from './components/StripeSetup';
 
-function App() {
+const queryClient = new QueryClient();
+
+function AppContent() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -25,50 +31,77 @@ function App() {
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
-  // Render payment status pages
+  // Render payment success page
   if (currentPath === '/payment-success') {
     return (
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-        <div className="min-h-screen bg-background">
-          <Header />
-          <PaymentSuccess />
-          <Footer />
-          <Toaster />
-        </div>
-      </ThemeProvider>
+      <div className="min-h-screen bg-background">
+        <Header />
+        <PaymentSuccess />
+        <Footer />
+      </div>
     );
   }
 
+  // Render payment failure page
   if (currentPath === '/payment-failure') {
     return (
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-        <div className="min-h-screen bg-background">
-          <Header />
-          <PaymentFailure />
-          <Footer />
-          <Toaster />
-        </div>
-      </ThemeProvider>
+      <div className="min-h-screen bg-background">
+        <Header />
+        <PaymentFailure />
+        <Footer />
+      </div>
+    );
+  }
+
+  // Render checkout page
+  if (currentPath === '/checkout') {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <Checkout />
+        <Footer />
+      </div>
+    );
+  }
+
+  // Render order history page
+  if (currentPath === '/orders') {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <OrderHistory />
+        <Footer />
+      </div>
     );
   }
 
   // Render main site
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main>
-          <Hero />
-          <Services />
-          <Products />
-          <About />
-          <WhyChooseUs />
-          <Contact />
-        </main>
-        <Footer />
+    <div className="min-h-screen bg-background">
+      <Header />
+      <ProfileSetupModal />
+      <StripeSetup />
+      <main>
+        <Hero />
+        <Services />
+        <Products />
+        <About />
+        <WhyChooseUs />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <AppContent />
         <Toaster />
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

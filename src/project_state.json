@@ -1,28 +1,113 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
-  "architectural_notes": [],
+  "summary": "Full-stack e-commerce platform for computer products with user authentication, shopping cart, checkout, order tracking, and secure Stripe payments",
+  "architectural_notes": [
+    "Using Internet Identity for secure passkey-based user authentication",
+    "Stripe integration for secure online payment processing",
+    "Sample computer products pre-loaded in catalog",
+    "Basic order status workflow: Pending → Processing → Shipped → Delivered"
+  ],
   "known_issues": [],
   "isFixRequest": false,
-  "existing_features": [],
+  "imageRequirements": "## Required Images\n- Computer desktop setup hero background image with warm lighting (hero-computers.dim_1920x800.png)\n- Shopping cart icon in terracotta color (cart-icon.dim_64x64.png)\n- Desktop computer product photo on white background (desktop-pc.dim_400x400.png)\n- Laptop computer product photo on white background (laptop.dim_400x400.png)\n- Computer components (RAM, motherboard) product photo (components.dim_400x400.png)\n- Gaming peripherals (keyboard, mouse) product photo (peripherals.dim_400x400.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-user-authentication-system-using-internet-identity-allowing-users-to-securely-log-in-and-maintain-their-session-across-the-platform",
+      "title": "Implement user authentication system using Internet Identity allowing users to securely log in and maintain their session across the platform",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-product-catalog-system-for-computer-products-with-categories-descriptions-pricing-and-product-images-pre-populate-with-sample-computer-products-including-desktops-laptops-components-and-peripherals",
+      "title": "Create product catalog system for computer products with categories, descriptions, pricing, and product images. Pre-populate with sample computer products including desktops, laptops, components, and peripherals",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-shopping-cart-functionality-allowing-users-to-add-products-update-quantities-remove-items-and-view-cart-total-cart-must-persist-for-logged-in-users",
+      "title": "Implement shopping cart functionality allowing users to add products, update quantities, remove items, and view cart total. Cart must persist for logged-in users",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-checkout-system-with-stripe-payment-integration-collect-shipping-address-and-contact-information-during-checkout-process-payment-through-stripe-and-create-order-record-upon-successful-payment",
+      "title": "Build checkout system with Stripe payment integration. Collect shipping address and contact information during checkout, process payment through Stripe, and create order record upon successful payment",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-order-tracking-system-showing-order-history-for-logged-in-users-with-basic-status-progression-pending-processing-shipped-delivered-each-order-displays-products-purchased-total-amount-order-date-and-current-status",
+      "title": "Implement order tracking system showing order history for logged-in users with basic status progression: Pending, Processing, Shipped, Delivered. Each order displays products purchased, total amount, order date, and current status",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-a-cohesive-visual-theme-using-warm-earth-tones-with-terracotta-accents-and-clean-modern-typography-apply-consistent-styling-across-all-pages-including-product-cards-cart-checkout-and-order-tracking-interfaces",
+      "title": "Design a cohesive visual theme using warm earth tones with terracotta accents and clean modern typography. Apply consistent styling across all pages including product cards, cart, checkout, and order tracking interfaces",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Add a new Facebook profile link to the website footer (https://www.facebook.com/profile.php?id=61575271824165)",
+      "summary": "User authentication system with Internet Identity",
       "reqIds": [],
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "AR-2",
-      "summary": "Add a new Facebook social link in the website footer that points to https://www.facebook.com/profile.php?id=61575271824165.",
+      "summary": "Product catalog with browsing and search functionality",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Shopping cart functionality",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Checkout system with Stripe payment integration",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Order tracking with basic status updates (Pending, Processing, Shipped, Delivered)",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Contact details in footer (Phone: 9315906829, Email: panerudaya11@gmail.com)",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Display contact details in the footer: Phone number 9315906829 and email address panerudaya11@gmail.com. Make email and phone clickable (mailto and tel links)",
       "reqIds": [
-        "REQ-1"
+        "REQ-6"
       ],
       "status": "pending"
     }
   ],
-  "projectName": "PC Computer Site",
+  "projectName": "DQM Computer Store",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

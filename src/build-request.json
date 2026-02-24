@@ -1,45 +1,177 @@
 {
   "kind": "build_request",
-  "title": "Add Facebook profile link to site footer",
-  "projectName": "PC Computer Site",
+  "title": "Build full-stack computer product e-commerce platform",
+  "projectName": "DQM Computer Store",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Add a new Facebook social link in the website footer that points to https://www.facebook.com/profile.php?id=61575271824165.",
-      "target": "frontend",
+      "text": "Implement user authentication system using Internet Identity allowing users to securely log in and maintain their session across the platform",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-1",
-          "msg-2",
-          "msg-3"
+          "msg-6"
         ],
         "quotes": [
-          "Replace an existing social link with this one",
-          "https://www.facebook.com/profile.php?id=61575271824165",
-          "add a new Facebook link to the footer\\"
+          "user login"
         ]
       },
       "acceptanceCriteria": [
-        "The footer displays a Facebook link/icon under a \"Follow Us\" (or equivalent) label.",
-        "Clicking the Facebook link opens https://www.facebook.com/profile.php?id=61575271824165.",
-        "The Facebook link opens in a new tab and includes rel=\"noopener noreferrer\".",
-        "The Facebook link is present anywhere the footer renders (including the main site and payment status pages).",
-        "The Facebook link has accessible labeling (e.g., aria-label=\"Facebook\")."
+        "Users can log in using Internet Identity passkey authentication",
+        "User session persists across page refreshes",
+        "Login state is reflected in the UI (show logged-in user identity)",
+        "Users can log out successfully"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create product catalog system for computer products with categories, descriptions, pricing, and product images. Pre-populate with sample computer products including desktops, laptops, components, and peripherals",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "computer product purchase platform"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores product data including name, description, price, category, and image URL",
+        "Frontend displays products organized by categories",
+        "Each product shows image, name, price, and description",
+        "At least 8-10 sample computer products are pre-loaded",
+        "Products include various categories (desktops, laptops, components, peripherals)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement shopping cart functionality allowing users to add products, update quantities, remove items, and view cart total. Cart must persist for logged-in users",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "cart"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can add products to cart from product listings",
+        "Cart displays all added items with quantity and individual prices",
+        "Users can update item quantities in the cart",
+        "Users can remove items from the cart",
+        "Cart shows total price calculation",
+        "Cart persists for logged-in users across sessions",
+        "Cart is accessible from a dedicated cart page or modal"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build checkout system with Stripe payment integration. Collect shipping address and contact information during checkout, process payment through Stripe, and create order record upon successful payment",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6",
+          "msg-8"
+        ],
+        "quotes": [
+          "checkout",
+          "secure online payments",
+          "Stripe integration for secure online payments"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Checkout page collects shipping address (street, city, state, postal code, country)",
+        "Checkout page collects contact information (name, email, phone)",
+        "Integration with Stripe creates a checkout session for the cart total",
+        "User is redirected to Stripe hosted checkout page",
+        "Successful payment creates an order record in the backend",
+        "User is redirected to success page after payment",
+        "User is redirected to failure page if payment fails"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement order tracking system showing order history for logged-in users with basic status progression: Pending, Processing, Shipped, Delivered. Each order displays products purchased, total amount, order date, and current status",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6",
+          "msg-8"
+        ],
+        "quotes": [
+          "order tracking",
+          "Basic order tracking with status updates (Pending → Processing → Shipped → Delivered)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores orders with status field supporting Pending, Processing, Shipped, Delivered",
+        "Users can view their complete order history",
+        "Each order shows order number, date, items purchased, total amount, and current status",
+        "Order status is visually indicated with appropriate styling",
+        "Orders are sorted by date (most recent first)"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Display contact details in the footer: Phone number 9315906829 and email address panerudaya11@gmail.com. Make email and phone clickable (mailto and tel links)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "contacts details are 9315906829 and mail id is panerudaya11@gmail.com"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Footer displays phone number 9315906829 with tel: link",
+        "Footer displays email panerudaya11@gmail.com with mailto: link",
+        "Contact details are clearly visible and properly formatted",
+        "Links are functional on both desktop and mobile"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Design a cohesive visual theme using warm earth tones with terracotta accents and clean modern typography. Apply consistent styling across all pages including product cards, cart, checkout, and order tracking interfaces",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Color palette uses warm earth tones (terracotta, sand, warm grays) consistently",
+        "Typography is modern and readable across all components",
+        "Visual hierarchy clearly distinguishes headings, body text, and interactive elements",
+        "Design feels cohesive across products, cart, checkout, and order pages",
+        "Interactive elements have clear hover and active states"
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui or other paths listed as immutable in SYSTEM_CONTEXT.",
-    "Keep all backend logic within the existing single Motoko actor; no new backend canisters/services."
+    "Use Internet Identity for user authentication (no third-party auth providers)",
+    "Use Stripe for payment processing",
+    "Backend must be implemented as a single Motoko actor in backend/main.mo",
+    "Do not modify immutable frontend paths: useInternetIdentity.ts, useActor.ts, main.tsx, components/ui/*"
   ],
   "nonGoals": [
-    "Adding or changing any other social media links (Instagram/Twitter/etc.).",
-    "Adding or displaying the provided GST Registration Number (05AOOPP7917D2ZO) anywhere in the UI unless explicitly requested later.",
-    "Any changes to backend data models, persistence, or APIs."
+    "Admin dashboard for product management",
+    "Advanced search and filtering beyond basic category organization",
+    "Real-time shipping carrier integration",
+    "Product reviews and ratings",
+    "Wishlist functionality",
+    "Multiple payment methods beyond Stripe"
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Computer desktop setup hero background image with warm lighting (hero-computers.dim_1920x800.png)",
+      "Shopping cart icon in terracotta color (cart-icon.dim_64x64.png)",
+      "Desktop computer product photo on white background (desktop-pc.dim_400x400.png)",
+      "Laptop computer product photo on white background (laptop.dim_400x400.png)",
+      "Computer components (RAM, motherboard) product photo (components.dim_400x400.png)",
+      "Gaming peripherals (keyboard, mouse) product photo (peripherals.dim_400x400.png)"
+    ],
     "edits": []
   }
 }

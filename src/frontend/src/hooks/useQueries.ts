@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import type { Document, ContactSubmission, Product, ProductCategory } from '../backend';
+import type { Document, ContactSubmission, Product, ProductCategory, PaymentOrder } from '../backend';
 import { getStaticProductByName } from '../catalog/staticProducts';
 
 export function useGetAllDocuments() {
@@ -106,5 +106,19 @@ export function useGetAllProducts() {
       return actor.getAllProducts();
     },
     enabled: !!actor && !isFetching
+  });
+}
+
+export function useGetOrders() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<PaymentOrder[]>({
+    queryKey: ['orders'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getOrders();
+    },
+    enabled: !!actor && !isFetching,
+    retry: false,
   });
 }

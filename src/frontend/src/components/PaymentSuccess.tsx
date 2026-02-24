@@ -1,8 +1,17 @@
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useCart } from '../hooks/useCart';
+import { useEffect } from 'react';
 
 const PaymentSuccess = () => {
+  const { clearCart } = useCart();
+
+  useEffect(() => {
+    // Clear cart on successful payment
+    clearCart();
+  }, [clearCart]);
+
   const handleContinueShopping = () => {
     window.location.href = '/';
   };
@@ -21,7 +30,7 @@ const PaymentSuccess = () => {
             Thank you for your purchase. Your order has been confirmed and will be processed shortly.
           </p>
           <p className="text-muted-foreground">
-            You will receive an email confirmation with your order details and tracking information.
+            You will receive an email confirmation with your order details. You can also view your order in the Order History section.
           </p>
           <div className="pt-4">
             <Button size="lg" onClick={handleContinueShopping} className="group">

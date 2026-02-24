@@ -13,15 +13,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGetAllAvailableProducts } from '@/hooks/useQueries';
-import { useCreateCheckoutSession } from '@/hooks/useCreateCheckoutSession';
+import { useCart } from '@/hooks/useCart';
 import { ProductCategory, Product } from '../backend';
 import { toast } from 'sonner';
-import { useState } from 'react';
 
 const Products = () => {
   const { data: products, isLoading } = useGetAllAvailableProducts();
-  const createCheckoutSession = useCreateCheckoutSession();
-  const [purchasingProductId, setPurchasingProductId] = useState<bigint | null>(null);
+  const { addToCart } = useCart();
 
   const categoryIcons = {
     [ProductCategory.Computers]: Monitor,
@@ -41,7 +39,10 @@ const Products = () => {
 
   const formatPrice = (price?: bigint) => {
     if (!price) return null;
-    return `₹${Number(price).toLocaleString('en-IN')}`;
+    return `₹${(Number(price) / 100).toLocaleString('en-IN', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
   };
 
   const getImageSource = (product: Product) => {
@@ -54,35 +55,24 @@ const Products = () => {
     return null;
   };
 
-  const handleBuyNow = async (product: Product) => {
+  const handleAddToCart = (product: Product) => {
     if (!product.price) {
       toast.error('Price not available. Please contact us for pricing.');
       return;
     }
 
-    setPurchasingProductId(product.id);
+    const imageSource = getImageSource(product);
 
-    try {
-      const shoppingItems = [{
-        productName: product.name,
-        productDescription: product.description || 'No description',
-        priceInCents: product.price,
-        quantity: BigInt(1),
-        currency: 'INR'
-      }];
+    addToCart({
+      productId: product.id.toString(),
+      productName: product.name,
+      productDescription: product.description || 'No description',
+      priceInCents: product.price,
+      currency: 'INR',
+      imageUrl: imageSource || undefined,
+    });
 
-      const session = await createCheckoutSession.mutateAsync(shoppingItems);
-      
-      if (!session?.url) {
-        throw new Error('Stripe session missing url');
-      }
-
-      window.location.href = session.url;
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      toast.error(error.message || 'Failed to initiate checkout. Please try again.');
-      setPurchasingProductId(null);
-    }
+    toast.success(`${product.name} added to cart!`);
   };
 
   const groupedProducts = products?.reduce((acc, product) => {
@@ -130,7 +120,6 @@ const Products = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {categoryProducts.map((product) => {
                       const imageSource = getImageSource(product);
-                      const isPurchasing = purchasingProductId === product.id;
                       
                       return (
                         <Card
@@ -172,20 +161,11 @@ const Products = () => {
                           <CardContent className="pt-0">
                             <Button
                               className="w-full"
-                              onClick={() => handleBuyNow(product)}
-                              disabled={!product.price || isPurchasing}
+                              onClick={() => handleAddToCart(product)}
+                              disabled={!product.price}
                             >
-                              {isPurchasing ? (
-                                <>
-                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                  Processing...
-                                </>
-                              ) : (
-                                <>
-                                  <ShoppingCart className="mr-2 h-4 w-4" />
-                                  Buy Now
-                                </>
-                              )}
+                              <ShoppingCart className="mr-2 h-4 w-4" />
+                              Add to Cart
                             </Button>
                           </CardContent>
                         </Card>
